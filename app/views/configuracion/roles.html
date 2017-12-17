@@ -1,0 +1,55 @@
+<div class="card" style="margin-top:10px;">
+
+  <div class="card-head style-default-light" style="padding-top:10px; padding-left:10px;">
+    <header>
+      <strong style="font-weight:bold; border:none; margin-left:10px;">Roles</strong>
+      <br /><small class="text-muted" style="font-size:14px; margin-left:10px;"> <a href="#"><i class="fa fa-home" aria-hidden="true"></i> Inicio</a>><a href="#" class="paginaActiva">Configuración</a></small>
+
+    </header>
+    <div class="tools">
+      <div class="btn-group">
+        <button type="button" class="btn pull-right btn-raised btn-success btn-sm" permission permission-only="'rolesAdd'" ui-sref="home.provision.nuevorol"><i class="fa fa-plus" aria-hidden="true"></i> Nuevo</button>
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="panel form-element-padding">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Descripcion</th>
+            <th>Estatus</th>
+            <th>Opciones</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr dir-paginate="x in $ctrl.Roles|itemsPerPage:5">
+            <td>{{ x.IdRol }}</td>
+            <td>{{ x.Nombre }}</td>
+            <td>{{ x.Descripcion }}</td>
+            <td ng-if="x.Estado==true">
+              <span class="label label-outline label-success">Activo</span>
+            </td>
+            <td ng-if="x.Estado==false">
+              <span class="label label-outline label-danger">Desactivado</span>
+            </td>
+
+            <td>
+
+              <a ui-sref="home.provision.editarol({id:x.IdRol })" permission permission-only="'rolesUpdate'" class="btn  btn-xs btn-warning" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar Rol"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="padding-left: 20px;" ng-show="true">
+        <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true">
+        </dir-pagination-controls>
+      </div>
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,88 @@
+<div class="modal-header">
+  <button class="close" aria-label="Close" type="button" ng-click="ctrl.cancel()">×</button>
+  <h4 class="modal-title">Suscriptores</h4>
+</div>
+<div class="modal-body" style="padding-top:20px;">
+
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="panel-heading">
+        <div class="tools">
+          <div class="panel-group" id="suscriptor">
+            <div class="card panel">
+              <div class="card-head card-head-xs collapsed" data-toggle="collapse" data-parent="#suscriptor" data-target="#suscriptor-1" aria-expanded="false">
+                <header>Buscar Suscriptor</header>
+                <div class="tools">
+                  <a class="btn btn-icon-toggle"><i class="fa fa-angle-down"></i></a>
+                </div>
+              </div>
+              <div id="suscriptor-1" class="collapse buscarSuscriptor" aria-expanded="false" style="height: 0px;">
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-md-2" style="margin-top:-30px;">
+                      <div class="panel-body">
+                        <input type="text" placeholder="Suscriptor" class="form-control" ng-change="ctrl.cambiarBusqueda(1)" ng-model="ctrl.bsan">
+                      </div>
+                    </div>
+                    <div class="col-md-4" style="margin-top:-30px;">
+                      <div class="panel-body">
+                        <input type="text" placeholder="Nombre" class="form-control" ng-change="ctrl.cambiarBusqueda(2)" ng-model="ctrl.bnombre">
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <p class="text-right">
+                        <button type="button" class="btn btn-raised btn-primary btn-sm" ng-click="ctrl.buscar()"><i class="fa fa-search" aria-hidden="true"></i> Buscar</button>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <!-- panel body -->
+              </div>
+            </div>
+            <!--end .panel -->
+          </div>
+        </div>
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Suscriptor</th>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Telefono</th>
+            <th>Ciudad</th>
+            <th>Opciones</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <tr dir-paginate="x in ctrl.suscriptores|itemsPerPage:8">
+            <td>{{x.IdSuscriptor}}</td>
+            <td>{{x.Nombre}} {{x.Apellido}}</td>
+            <td>{{x.Email}} </td>
+            <td>{{x.Telefono}}</td>
+            <td>{{x.Ciudad}}</td>
+            <td>
+              <button class="btn  btn-xs btn-info" ng-click="ctrl.SeleccionarSusc(x)">
+                  <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
+
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div>
+        <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true">
+        </dir-pagination-controls>
+      </div>
+    </div>
+
+
+  </div>
+
+</div>
+<div class="modal-footer">
+  <button class="btn btn-default" type="button" ng-click="ctrl.cancel()">cerrar</button>
+
+</div>
