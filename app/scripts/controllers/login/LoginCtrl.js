@@ -7,13 +7,9 @@ function LoginCtrl(authFactory, ngNotify, $state, $localStorage, $stateParams, $
 	
 	this.$onInit = function () {
 		if ($localStorage.currentUser) {
-			if ($stateParams.esn != undefined) {
-				$state.go('home.provision.activacion', {
-					'esn': $stateParams.esn
-				});
-			} else {
-				$state.go('home.dashboard');
-			}
+			
+			$state.go('home.dashboard');
+			
 		}
 	}
 

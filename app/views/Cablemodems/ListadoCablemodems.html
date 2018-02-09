@@ -1,0 +1,69 @@
+<div class="card" style="margin-top:10px;">
+
+  <div class="card-head style-default-light" style="padding-top:10px; padding-left:10px;">
+    <header>
+      <strong style="font-weight:bold; border:none; margin-left:10px;">Listado Cablemodems</strong>
+      <br /><small class="text-muted" style="font-size:14px; margin-left:10px;"> <a href="#"><i class="fa fa-home" aria-hidden="true"></i> Inicio</a>><a href="#" class="paginaActiva">Cablemodems</a></small>
+
+    </header>
+  </div>
+  <div class="card-body">
+    <div class="panel form-element-padding">
+      <table class="table" st-table="$ctrl.Cablemodems" st-safe-src="$ctrl.rowCablemodems" class="table table-striped" st-filtered-collection="$ctrl.filteredCablemodems">
+        <thead>
+          <tr>
+            <th st-sort="MAC">MAC</th>
+            <th st-sort="IP">IP</th>
+            <th st-sort="Puerto">Puerto</th>
+            <th st-sort="RxPwr">RxPwr</th>
+            <th st-sort="Status">Status</th>
+            <th st-sort="Activo">Activo</th>
+            <th st-sort="Opciones">Opciones</th>
+          </tr>
+          <tr>
+            <th>
+              <input st-search="MAC" placeholder="MAC" class="input-sm form-control" type="search" />
+            </th>
+             <th>
+              <input st-search="IP" placeholder="IP" class="input-sm form-control" type="search" />
+            </th>
+            <th>
+              <input st-search="Puerto" placeholder="Puerto" class="input-sm form-control" type="search" />
+            </th>
+             <th>
+              <input st-search="RxPwr" placeholder="RxPwr" class="input-sm form-control" type="search" />
+            </th>
+             <th>
+              <input st-search="Status" placeholder="Status" class="input-sm form-control" type="search" />
+            </th>
+            <th>
+              <input st-search="Activo" placeholder="Activo" class="input-sm form-control" type="search" />
+            </th> 
+            <th>
+              <input st-search="Fap" placeholder="" class="input-sm form-control" type="search"/>
+            </th>  
+          </tr>
+        </thead>
+        <tbody>
+          <tr dir-paginate="x in $ctrl.Cablemodems|itemsPerPage:15">
+            <td>{{ x.MAC }}</td>
+            <td>{{ x.IP }}</td>
+            <td>{{ x.Puerto }}</td>
+            <td>{{ x.RxPwr }}</td>
+            <td>{{ x.Status }}</td>
+            <td>{{ x.Activo }}</td>
+            <td>
+              <a ui-sref="home.cablemodems.solo({id:x.MAC})" permission class="btn  btn-xs btn-warning" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar CMTS"><i class="fa fa-eye" aria-hidden="true"></i></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="padding-left: 20px;" ng-show="true">
+        <dir-pagination-controls max-size="15" direction-links="true" boundary-links="true">
+        </dir-pagination-controls>
+      </div>
+    </div>
+
+  </div>
+
+</div>

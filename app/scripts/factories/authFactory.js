@@ -17,6 +17,7 @@ angular.module('softvFrostApp')
 			};
 			$http.post(globalService.getUrl() + paths.login, JSON.stringify(Parametros), config)
 				.then(function(response) {
+					//console.log('LogonResponse',response);
 					if (response.data.LogOnResult.Token) {
 						$localStorage.currentUser = {
 							token: response.data.LogOnResult.Token,
@@ -26,7 +27,7 @@ angular.module('softvFrostApp')
 							usuario: response.data.LogOnResult.Usuario,
 							menu: response.data.LogOnResult.Menu
 						};
-						console.log($localStorage.currentUser);
+						//console.log($localStorage.currentUser);
 						deferred.resolve(true);
 					} else {
 						deferred.resolve(false);

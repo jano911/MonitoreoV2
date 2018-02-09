@@ -21,7 +21,7 @@ function EditaRolCtrl(usuarioFactory, rolFactory, $state, ngNotify, $stateParams
             if (vm.comandos[a].IdComando == data.GetRoleCommandsResult[b].IdComando) {
               vm.comandos[a].selected = true;
             }
-          }
+          } 
         }        
       });
     });

@@ -1,0 +1,74 @@
+<form angular-validator-submit="$ctrl.CMTSNuevo();" name="myForm" class="form-horizontal" novalidate angular-validator>
+  <div class="card" style="margin-top:10px;">
+    <div class="card-head style-default-light" style="padding-top:10px; padding-left:10px;">
+      <header>
+        <strong style="font-weight:bold; border:none; margin-left:10px;">Nuevo CMTS</strong>
+        <br /><small class="text-muted" style="font-size:14px; margin-left:10px;"> <a href="#"><i class="fa fa-home" aria-hidden="true"></i> Inicio</a>><a href="#" class="paginaActiva">Administración</a></small>
+
+      </header>
+      <div class="tools">
+
+        <!-- <button type="button" class="btn pull-right btn-raised btn-success btn-sm" ng-click="$ctrl.Guardar()" permission permission-only="'permisosAdd'">Guardar</button> -->
+        <button class="btn btn-success btn-sm" type="submit">Guardar</button>
+        <button type="button" class="btn btn-raised btn-default btn-sm" ui-sref="home.administracion.cmts"> Cancelar</button>
+
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-5">
+        <div class="col-md-12">
+          <b>Nombre CMTS</b>
+          <input type="text" class="form-control col-md-4" ng-model="$ctrl.Nombre" name="Nombre" required-message="'Este campo es obligatorio.'" validate-on="dirty" required validate-on="dirty">
+        </div>
+    
+      
+        <div class="col-md-12">
+          <b>IP</b>
+          <input type="text" class="form-control col-md-4" ng-model="$ctrl.IP" name="IP" required-message="'Este campo es obligatorio.'" validate-on="dirty" required validate-on="dirty">
+        </div>
+
+        <div class="col-md-12">
+          <b>Comunidad</b>
+          <input type="text" class="form-control col-md-4" ng-model="$ctrl.Comunidad" name="Comunidad" required-message="'Este campo es obligatorio.'" validate-on="dirty" required validate-on="dirty">
+        </div>
+
+        <div class="col-md-12">
+          <b>Comunidad Cablemodems</b>
+          <input type="text" class="form-control col-md-4" ng-model="$ctrl.ComunidadCablemodems" name="ComunidadCablemodems" required-message="'Este campo es obligatorio.'" validate-on="dirty" required validate-on="dirty">
+        </div>
+
+        <div class="col-md-12">
+          <b>Tipo</b>
+          <select class="form-control" ng-options="item as item.Nombre for item in $ctrl.Tipos track by item.IdTipo" ng-model="$ctrl.TipoCMTS" name="rol" validate-on="dirty" required-message="'Este campo es obligatorio.'" required>
+                  <option value="">Selecciona</option>
+                </select>
+        </div>
+
+        <div class="col-md-12">
+          <b>Interface</b>
+          <input type="text" class="form-control col-md-4" ng-model="$ctrl.Interface" name="Interface" required-message="'Este campo es obligatorio.'" validate-on="dirty" required validate-on="dirty">
+        </div>
+
+        <div class="col-md-12">
+          <b>Usuario</b>
+          <input type="text" class="form-control col-md-4" ng-model="$ctrl.Usuario" name="Usuario" required-message="'Este campo es obligatorio.'" validate-on="dirty" required validate-on="dirty">
+        </div>
+
+        <div class="col-md-12">
+          <b>Password</b>
+          <input type="text" class="form-control col-md-4" ng-model="$ctrl.PasswordS" name="Password" required-message="'Este campo es obligatorio.'" validate-on="dirty" required validate-on="dirty">
+        </div>
+
+        <div class="col-md-12">
+          <b>Enable</b>
+          <input type="text" class="form-control col-md-4" ng-model="$ctrl.Enable" name="Enable" required-message="'Este campo es obligatorio.'" validate-on="dirty" required validate-on="dirty">
+        </div>
+        
+        
+      </div>
+    </div>
+  </div>
+
+  </div>
+</form>
