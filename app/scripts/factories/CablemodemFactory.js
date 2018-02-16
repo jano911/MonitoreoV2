@@ -6,14 +6,14 @@ angular.module('softvFrostApp')
 			GetListaCablemodem: '/Cablemodem/GetListaCablemodem'
 		};
 
-		factory.GetListaCablemodem = function() {
+		factory.GetListaCablemodem = function(parametros) {
 			var deferred = $q.defer();
 			var config = {
 				headers: {
 					'Authorization': $localStorage.currentUser.token
 				}
 			};
-			$http.get(globalService.getUrl() + paths.GetListaCablemodem, config).then(function(response) {
+			$http.post(globalService.getUrl() + paths.GetListaCablemodem, parametros, config).then(function(response) {
 				deferred.resolve(response.data);
 			}).catch(function(data) {
 				deferred.reject(data);

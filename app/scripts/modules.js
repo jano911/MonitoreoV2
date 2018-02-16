@@ -33,7 +33,9 @@ angular.module('softvFrostApp')
 				}
 			},
 			url: '/dashboard',
-			templateUrl: 'views/dashboard.html'
+			templateUrl: 'views/dashboard.html',
+			controller: 'dashboardCtrl',
+			controllerAs: '$ctrl'
 		},
 		{
 			name: 'login',

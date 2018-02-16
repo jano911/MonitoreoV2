@@ -1,12 +1,111 @@
-<style media="screen">
-	html, body {
-	  height: 100%;
-	  background-color: white;
-	}
+<section style="margin-top:10px;">
+	<div class="row">
+		<div class="col-lg-5">
+			<div class="card card-outlined style-gray-light">
+				<div class="card-head style-primary-dark ">
+					<header>CMTS Registrados en el sistema</header>
+				</div>
+				<div class="card-body style-default-bright">
+					<div ng-repeat="x in $ctrl.CMTSs" >
+						<div class="col-md-3">
+							<button class="btn btn-block ink-reaction"
+							ng-class="x.Activo ? 'btn-success' : 'btn-default-bright'"
+							 type="button" ng-click="$ctrl.CambiaCMTS(x)" >{{x.Nombre}}</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-5">
+			<div class="card card-outlined style-gray-light">
+				<div class="card-head card-head-xs style-info ">
+					<header>Descripción</header>
+				</div>
+				<div class="card-body style-default-bright">
+					asdasdasdasda
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-4">
+			<div class="card">
+				<div class="card-body no-padding">
+					<div class="alert alert-callout alert-danger no-margin">
+						<strong class="text-lg">13 dias 15 horas</strong><br>
+						<span class="opacity-50">Tiempo de Actividad</span>
+						<div class="stick-bottom-left-right">
+							<div class="progress progress-hairline no-margin">
+								<div class="progress-bar progress-bar-danger" style="width:43%">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-.page-row-expanded { height: 100%; }
-</style>
-<section class="section-account">
+		<div class="col-md-4">
+			<div class="card">
+				<div class="card-body no-padding">
+					<div class="alert alert-callout alert-danger no-margin">
+						<strong class="text-lg">Bajada 15 / Subida 15</strong><br>
+						<span class="opacity-50">Consumo de Datos</span>
+						<div class="stick-bottom-left-right">
+							<div class="progress progress-hairline no-margin">
+								<div class="progress-bar progress-bar-danger" style="width:43%">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-4">
+			<div class="card">
+				<div class="card-body no-padding">
+					<div class="alert alert-callout alert-danger no-margin">
+						<strong class="text-lg">4%</strong><br>
+						<span class="opacity-50">Carga de CPU Promedio</span>
+						<div class="stick-bottom-left-right">
+							<div class="progress progress-hairline no-margin">
+								<div class="progress-bar progress-bar-danger" style="width:43%">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6">
+			<div class="card card-outlined style-gray-light">
+				<div class="card-head card-head-xs style-info ">
+					<header>Módems en el Sistema</header>
+				</div>
+				<div class="card-body style-default-bright">
+					<div class="row">
+						<div class="col-md-8">
+							<div id="morris-donut-graph">
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div style="margin-top:15px;" class="alert alert-callout alert-danger">
+								<strong class="text-md">En línea: 12</strong><br>
+						        <strong class="text-md">Apagados: 30</strong><br>
+						        <strong class="text-md">Suspendidos: 20</strong><br>
+						        <strong class="text-md">En proceso: 5</strong><br>
+						    </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!--<section class="section-account">
 	<div class="card contain-xs style-transparent">
 		<div class="card-body">
 			<div class="row">
@@ -14,8 +113,8 @@
 					<img src="images/StarGo.jpg" width="350">
                     <hr>
 					<h2 class="text-light">¡BIENVENIDO!</h2>
-				</div><!--end .col -->
-			</div><!--end .row -->
-		</div><!--end .card-body -->
-	</div><!--end .card -->
-</section>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>-->

@@ -9,6 +9,15 @@
   </div>
   <div class="card-body">
     <div class="panel form-element-padding">
+      <!--<div class="row">-->
+        <div class="col-md-4">
+          <b>CMTS</b>
+          <select class="form-control" ng-options="item as item.Nombre for item in $ctrl.CMTSs track by item.IdCMTS" ng-model="$ctrl.CMTS" name="rol" validate-on="dirty" required-message="'Este campo es obligatorio.'" required ng-change="$ctrl.CambiaCMTS()">
+            <option value="">Selecciona</option>
+          </select>
+        </div>
+      <!--</div>-->
+      <br>
       <table class="table" st-table="$ctrl.Cablemodems" st-safe-src="$ctrl.rowCablemodems" class="table table-striped" st-filtered-collection="$ctrl.filteredCablemodems">
         <thead>
           <tr>
