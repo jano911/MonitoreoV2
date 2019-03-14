@@ -21,16 +21,6 @@ angular.module('softvFrostApp').config(function($stateProvider) {
 			controller: 'ListadoCablemodemsCtrl',
 			controllerAs: '$ctrl'
 		},
-		{
-			name: 'home.cablemodems.solo',
-			data: {
-				pageTitle: 'MonitoreoV2 | Listado Cablemodems',
-			},
-			url: '/cablemodems/solo/:id',
-			templateUrl: 'views/Cablemodems/SoloCablemodem.html',
-			controller: 'SoloCablemodemCtrl',
-			controllerAs: '$ctrl'
-		},
 	];
 
 	states.forEach(function(state) {

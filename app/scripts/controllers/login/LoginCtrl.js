@@ -8,7 +8,7 @@ function LoginCtrl(authFactory, ngNotify, $state, $localStorage, $stateParams, $
 	this.$onInit = function () {
 		if ($localStorage.currentUser) {
 			
-			$state.go('home.dashboard');
+			$state.go('home.cmts');
 			
 		}
 	}

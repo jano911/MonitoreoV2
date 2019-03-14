@@ -1,0 +1,56 @@
+<div class="modal-header">
+    <button class="close" aria-label="Close" type="button" ng-click="ctrl.cancel()">×</button>
+    <h4 class="modal-title">Detalle de Cablemodem : {{ctrl.Cablemodem.MAC}}</h4>
+</div>
+<div class="modal-body" style="padding-top:20px;">
+  <div class="row text-center">
+    <h4 class="text-info">Datos SOFTV</h4>
+    <div class="col-md-12">
+      <div class="col-md-3">
+        <b>Contrato:</b><br>
+        123456
+      </div>
+      <div class="col-md-3">
+        <b>Status:</b><br>
+        Instalado
+      </div>
+      <div class="col-md-3">
+        <b>Mes Pagado:</b><br>
+        Enero 2017
+      </div>
+      <div class="col-md-3">
+        <b>Nombre:</b><br>
+        Juan Roberto López
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="col-md-3">
+        <b>Servicio:</b><br>
+        Internet Ilimitado
+      </div>
+      <div class="col-md-3">
+        <b>Domicilio:</b><br>
+        San Francisco de los Romo 108
+      </div>
+    </div>
+  </div>
+  <div class="row text-center">
+    <h4 class="text-info">Datos Técnicos</h4>
+  </div>
+  <div class="row text-center">
+    <div class="col-md-4">
+      <ui-knob value="ctrl.valueSNR" options="ctrl.optionsSNR"></ui-knob>
+    </div>
+    <div class="col-md-4">
+      <ui-knob value="ctrl.valueUST" options="ctrl.optionsUST"></ui-knob>
+    </div>
+    <div class="col-md-4">
+      <ui-knob value="ctrl.valueDST" options="ctrl.optionsDST"></ui-knob>
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-default" type="button" ng-click="ctrl.cancel()">Cerrar</button>
+</div>
+

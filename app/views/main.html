@@ -59,6 +59,13 @@
     </div>
     <div class="menubar-scroll-panel">
       <ul id="main-menu" class="gui-controls">
+        <!--Metemos el home fijo, ya que no se va a expandir de ninguno-->
+        <li class="expanding">
+          <a ui-sref="home.cmts">
+            <div class="gui-icon"><i class="md md-home"></i></div>
+            <span class="title">CMTS</span>
+          </a>
+        </li>
         <li class="gui-folder" ng-repeat="x in $ctrl.menus | orderBy:'SortOrder'" ui-sref-active="active">
           <a ui-sref="{{ x.Class }}" ng-if="x.MenuChild.length == 0">
             <div class="gui-icon"><i class="{{ x.Icon }}"></i></div>

@@ -62,7 +62,7 @@
             <td>{{ x.Status }}</td>
             <td>{{ x.Activo }}</td>
             <td>
-              <a ui-sref="home.cablemodems.solo({id:x.MAC})" permission class="btn  btn-xs btn-warning" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar CMTS"><i class="fa fa-eye" aria-hidden="true"></i></a>
+              <a ng-click="$ctrl.DetalleCablemodem(x)" permission class="btn  btn-xs btn-warning" data-toggle="tooltip" data-placement="top" title="" data-original-title="Detalle Cablemodem"><i class="fa fa-eye" aria-hidden="true"></i></a>
             </td>
           </tr>
         </tbody>

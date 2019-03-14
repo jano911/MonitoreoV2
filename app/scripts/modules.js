@@ -50,6 +50,16 @@ angular.module('softvFrostApp')
 					controllerAs: '$ctrl'
 				}
 			},
+		},
+		{
+			name: 'home.cmts',
+			data: {
+				pageTitle: 'BIENVENIDO | MonitoreoV2'
+			},
+			url: '/cmts',
+			templateUrl: 'views/CMTS/CMTSData.html',
+			controller: 'CMTSDataCtrl',
+			controllerAs: '$ctrl'
 		}
 		];
 
