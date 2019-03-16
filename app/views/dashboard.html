@@ -6,11 +6,11 @@
 					<header>CMTS Registrados en el sistema</header>
 				</div>
 				<div class="card-body style-default-bright">
-					<div ng-repeat="x in $ctrl.CMTSs" >
+					<div ng-repeat="x in $ctrl.CMTSs">
 						<div class="col-md-3">
 							<button class="btn btn-block ink-reaction"
-							ng-class="x.Activo ? 'btn-success' : 'btn-default-bright'"
-							 type="button" ng-click="$ctrl.CambiaCMTS(x)" >{{x.Nombre}}</button>
+								ng-class="x.Activo ? 'btn-success' : 'btn-default-bright'" type="button"
+								ng-click="$ctrl.CambiaCMTS(x)">{{x.Nombre}}</button>
 						</div>
 					</div>
 				</div>
@@ -94,16 +94,40 @@
 						<div class="col-md-4">
 							<div style="margin-top:15px;" class="alert alert-callout alert-danger">
 								<strong class="text-md">En línea: 12</strong><br>
-						        <strong class="text-md">Apagados: 30</strong><br>
-						        <strong class="text-md">Suspendidos: 20</strong><br>
-						        <strong class="text-md">En proceso: 5</strong><br>
-						    </div>
+								<strong class="text-md">Apagados: 30</strong><br>
+								<strong class="text-md">Suspendidos: 20</strong><br>
+								<strong class="text-md">En proceso: 5</strong><br>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="card card-outlined style-gray-light">
+				<div class="card-head card-head-xs style-info ">
+					<header>Historial</header>
+				</div>
+				<div class="card-body style-default-bright">
+					<div class="row">
+						<div id="chart_container">
+							<div id="chart" class="rickshaw_graph">
+
+							</div>
+							<div id="legend_container">
+								<div id="smoother" title="Smoothing"></div>
+								<div id="legend" class="rickshaw_legend"></div>
+							</div>
+							<div id="slider"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 </section>
 <!--<section class="section-account">
 	<div class="card contain-xs style-transparent">

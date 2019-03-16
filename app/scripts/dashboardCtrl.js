@@ -18,6 +18,94 @@ function dashboardCtrl(AdministracionFactory, $state) {
       ],
       colors : ["#64f28a","#f25235","#6394e7","#eeaa56"]
     });
+
+
+    //Grafica nueva
+    var seriesData = [[], [], []];
+    console.log(seriesData);
+    var random = new Rickshaw.Fixtures.RandomData(150);
+    console.log(random);
+
+    for (var i = 0; i < 150; i++) {
+      random.addData(seriesData);
+    }
+
+    // instantiate our graph!
+
+    var graph = new Rickshaw.Graph({
+      element: document.getElementById("chart"),
+      width: 960,
+      height: 500,
+      renderer: 'line',
+
+      series: [
+        {
+          color: 'rgba(255,0,0,0.3)',
+          /*data: [ 
+                { x: 0, y: 4 }, 
+                { x: 1, y: 11490 }, 
+                { x: 2, y: 38 }, 
+                { x: 3, y: 0 }, 
+                { x: 4, y: 320 }
+                 ],*/
+          data: seriesData[0],
+          name: 'Bajada'
+        }, {
+          color: 'rgba(0,10,255,0.5)',
+          /*data: [ 
+                { x: 0, y: 40 }, 
+                { x: 1, y: 10 }, 
+                { x: 2, y: 11380 }, 
+                { x: 3, y: 30 }, 
+                { x: 4, y: 320}
+                ],*/
+          data: seriesData[1],
+          name: 'Subida'
+        }
+      ]
+    });
+
+    console.log('3',seriesData);
+
+
+
+    var yAxis = new Rickshaw.Graph.Axis.Y({
+      graph: graph
+    });
+
+    yAxis.render();
+
+    var xAxis = new Rickshaw.Graph.Axis.Time({
+      graph: graph
+    });
+
+    xAxis.render();
+
+
+    var slider = new Rickshaw.Graph.RangeSlider.Preview({
+      graph: graph,
+      element: document.querySelector('#slider')
+    });
+
+
+
+
+    graph.render();
+
+    var hoverDetail = new Rickshaw.Graph.HoverDetail({
+      graph: graph
+    });
+
+    var legend = new Rickshaw.Graph.Legend({
+      graph: graph,
+      element: document.getElementById('legend')
+
+    });
+
+    var shelving = new Rickshaw.Graph.Behavior.Series.Toggle({
+      graph: graph,
+      legend: legend
+    });
   }
 
   function CambiaCMTS(CMTS){

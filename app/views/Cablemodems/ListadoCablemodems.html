@@ -2,31 +2,29 @@
 
   <div class="card-head style-default-light" style="padding-top:10px; padding-left:10px;">
     <header>
-      <strong style="font-weight:bold; border:none; margin-left:10px;">Listado Cablemodems</strong>
-      <br /><small class="text-muted" style="font-size:14px; margin-left:10px;"> <a href="#"><i class="fa fa-home" aria-hidden="true"></i> Inicio</a>><a href="#" class="paginaActiva">Cablemodems</a></small>
+      <strong style="font-weight:bold; border:none; margin-left:10px;">Listado de Aparatos</strong>
+      <br /><small class="text-muted" style="font-size:14px; margin-left:10px;"> <a href="#"><i class="fa fa-home" aria-hidden="true"></i> Inicio</a>><a href="#" class="paginaActiva">Aparatos</a></small>
 
     </header>
   </div>
   <div class="card-body">
     <div class="panel form-element-padding">
       <!--<div class="row">-->
-        <div class="col-md-4">
+        <!--<div class="col-md-4">
           <b>CMTS</b>
           <select class="form-control" ng-options="item as item.Nombre for item in $ctrl.CMTSs track by item.IdCMTS" ng-model="$ctrl.CMTS" name="rol" validate-on="dirty" required-message="'Este campo es obligatorio.'" required ng-change="$ctrl.CambiaCMTS()">
             <option value="">Selecciona</option>
           </select>
-        </div>
+        </div>-->
       <!--</div>-->
       <br>
       <table class="table" st-table="$ctrl.Cablemodems" st-safe-src="$ctrl.rowCablemodems" class="table table-striped" st-filtered-collection="$ctrl.filteredCablemodems">
         <thead>
           <tr>
             <th st-sort="MAC">MAC</th>
-            <th st-sort="IP">IP</th>
-            <th st-sort="Puerto">Puerto</th>
-            <th st-sort="RxPwr">RxPwr</th>
-            <th st-sort="Status">Status</th>
-            <th st-sort="Activo">Activo</th>
+            <th st-sort="Contrato">Contrato</th>
+            <th st-sort="Cliente">Cliente</th>
+            <th st-sort="Servicio">Servicio</th>
             <th st-sort="Opciones">Opciones</th>
           </tr>
           <tr>
@@ -34,20 +32,14 @@
               <input st-search="MAC" placeholder="MAC" class="input-sm form-control" type="search" />
             </th>
              <th>
-              <input st-search="IP" placeholder="IP" class="input-sm form-control" type="search" />
+              <input st-search="Contrato" placeholder="Contrato" class="input-sm form-control" type="search" />
             </th>
             <th>
-              <input st-search="Puerto" placeholder="Puerto" class="input-sm form-control" type="search" />
+              <input st-search="Cliente" placeholder="Cliente" class="input-sm form-control" type="search" />
             </th>
              <th>
-              <input st-search="RxPwr" placeholder="RxPwr" class="input-sm form-control" type="search" />
+              <input st-search="Servicio" placeholder="Servicio" class="input-sm form-control" type="search" />
             </th>
-             <th>
-              <input st-search="Status" placeholder="Status" class="input-sm form-control" type="search" />
-            </th>
-            <th>
-              <input st-search="Activo" placeholder="Activo" class="input-sm form-control" type="search" />
-            </th> 
             <th>
               <input st-search="Fap" placeholder="" class="input-sm form-control" type="search"/>
             </th>  
@@ -56,13 +48,12 @@
         <tbody>
           <tr dir-paginate="x in $ctrl.Cablemodems|itemsPerPage:15">
             <td>{{ x.MAC }}</td>
-            <td>{{ x.IP }}</td>
-            <td>{{ x.Puerto }}</td>
-            <td>{{ x.RxPwr }}</td>
-            <td>{{ x.Status }}</td>
-            <td>{{ x.Activo }}</td>
+            <td>{{ x.Contrato }}</td>
+            <td>{{ x.Nombre }}</td>
+            <td>{{ x.Servicio }}</td>
             <td>
-              <a ng-click="$ctrl.DetalleCablemodem(x)" permission class="btn  btn-xs btn-warning" data-toggle="tooltip" data-placement="top" title="" data-original-title="Detalle Cablemodem"><i class="fa fa-eye" aria-hidden="true"></i></a>
+              <a ng-click="$ctrl.DetalleCablemodem(x)" class="btn  btn-xs btn-warning" data-toggle="tooltip" data-placement="top" title="" data-original-title="Detalle Cablemodem"><i class="fa fa-bars" aria-hidden="true"></i></a>
+              <a ng-click="$ctrl.ConsumoTiempoReal(x)" class="btn  btn-xs btn-info" data-toggle="tooltip" data-placement="top" title="" data-original-title="Consumo Tiempo Real"><i class="fa fa-area-chart" aria-hidden="true"></i></a>
             </td>
           </tr>
         </tbody>

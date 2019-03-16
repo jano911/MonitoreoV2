@@ -56,6 +56,8 @@ module.exports = function(config) {
       'bower_components/angular-fixed-table-header/src/fixed-table-header.js',
       'bower_components/d3/d3.js',
       'bower_components/ng-knob/dist/ng-knob.js',
+      'bower_components/rickshaw/rickshaw.js',
+      'bower_components/angular-rickshaw/rickshaw.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'app/scripts/**/*.js',

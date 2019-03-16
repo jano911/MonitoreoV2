@@ -1,0 +1,75 @@
+<div class="modal-header">
+    <button class="close" aria-label="Close" type="button" ng-click="ctrl.cancel()">×</button>
+    <h4 class="modal-title">Consumo Tiempo Real: {{ctrl.Cablemodem.MAC}}</h4>
+  </div>
+  <div class="modal-body" style="padding-top:20px;">
+    <div class="row text-center">
+      <h4 class="text-info">Datos SOFTV</h4>
+      <div class="col-md-12">
+        <div class="col-md-3">
+          <b>Contrato:</b><br>
+          {{ctrl.Cliente.Contrato}}
+        </div>
+        <div class="col-md-3">
+          <b>Status:</b><br>
+          {{ctrl.Cliente.Status}}
+        </div>
+        <div class="col-md-3">
+          <b>Mes Pagado:</b><br>
+          {{ctrl.Cliente.ultimo_mes }} {{ctrl.Cliente.ultimo_anio}}
+        </div>
+        <div class="col-md-3">
+          <b>Nombre:</b><br>
+          {{ctrl.Cliente.Nombre}}
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="col-md-3">
+          <b>Servicio:</b><br>
+          {{ctrl.Cliente.Servicio}}
+        </div>
+        <div class="col-md-3">
+          <b>Límite Subida:</b><br>
+          {{ctrl.Cliente.LimiteSubida}}
+        </div>
+        <div class="col-md-3">
+            <b>Límite Bajada:</b><br>
+            {{ctrl.Cliente.LimiteBajada}}
+          </div>
+      </div>
+    </div>
+    <!--
+    <div class="row text-center">
+      <h4 class="text-info">Datos Técnicos</h4>
+    </div>
+    <div class="row text-center">
+      <div class="col-md-4">
+        <ui-knob value="ctrl.valueSNR" options="ctrl.optionsSNR"></ui-knob>
+      </div>
+      <div class="col-md-4">
+        <ui-knob value="ctrl.valueUST" options="ctrl.optionsUST"></ui-knob>
+      </div>
+      <div class="col-md-4">
+        <ui-knob value="ctrl.valueDST" options="ctrl.optionsDST"></ui-knob>
+      </div>
+    </div>-->
+    <div class="row text-center">
+      <h4 class="text-info">Consumo Actual</h4>
+    </div>
+    <div class="row">
+      <chart-realtime mac="{{ctrl.Cablemodem.MAC}}" ip="{{ctrl.IP}}" style="margin-left:15px;"></chart-canvas>
+      <!--<div id="chart_container">
+        <div id="chart" class="rickshaw_graph">
+        </div>
+        <div id="legend_container">
+          <div id="smoother" title="Smoothing"></div>
+          <div id="legend" class="rickshaw_legend"></div>
+        </div>
+        <div id="slider"></div>
+      </div>-->
+    </div>
+  </div>
+  
+  <div class="modal-footer">
+    <button class="btn btn-default" type="button" ng-click="ctrl.cancel()">Cerrar</button>
+  </div>

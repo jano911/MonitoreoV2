@@ -1,72 +1,26 @@
 'use strict';
 angular
   .module('softvFrostApp')
-  .controller('DetalleCablemodemCtrl', function ($filter, $uibModalInstance, $uibModal, cablemodem, $rootScope, ngNotify) {
+  .controller('DetalleCablemodemCtrl', function ($filter, $uibModalInstance, $uibModal, cablemodem, $rootScope, ngNotify, $document, CablemodemFactory) {
 
     function initialData() {
       vm.Cablemodem = cablemodem;
-      
-      vm.valueSNR = 30;
-      vm.optionsSNR = {
-        size: 150,
-        readOnly: true,
-        subText: {
-          enabled: true,
-          text: 'SNR',
-          color: 'gray',
-          font: 'auto'
-        },
-        trackWidth: 25,
-        barWidth: 15,
-        trackColor: '#656D7F',
-        barColor: '#2CC185',
-        max: 60,
-        min: 0
-      };
 
-      vm.valueUST = 30;
-      vm.optionsUST = {
-        size: 150,
-        readOnly: true,
-        subText: {
-          enabled: true,
-          text: 'Upstream',
-          color: 'gray',
-          font: 'auto'
-        },
-        trackWidth: 25,
-        barWidth: 15,
-        trackColor: '#656D7F',
-        barColor: '#2CC185',
-        max: 60,
-        min: 0
-      };
+      var parametros = {};
+      parametros.MAC = vm.Cablemodem.MAC;
+      CablemodemFactory.GetDatosCliente(parametros).then(function (data) {
+        vm.Cliente = data.GetDatosClienteResult;
+        console.log(data);
+      });
 
-      vm.valueDST = 30;
-      vm.optionsDST = {
-        size: 150,
-        readOnly: true,
-        subText: {
-          enabled: true,
-          text: 'Downstream',
-          color: 'gray',
-          font: 'auto'
-        },
-        trackWidth: 25,
-        barWidth: 15,
-        trackColor: '#656D7F',
-        barColor: '#2CC185',
-        max: 60,
-        min: 0
-      };
     }
 
-    function cancel(){
+    function cancel() {
       $uibModalInstance.dismiss('cancel');
     }
 
-    function ok(){
-      
+    function ok() {
+
     }
 
     var vm = this;
