@@ -26,7 +26,7 @@ angular.module('softvFrostApp', [
 		'blockUI',
 		'ngMap',
 		'permission', 'permission.ui',
-		'ui.mask','ngCsv','fixed.table.header','ui.knob'
+		'ui.mask','ngCsv','fixed.table.header','ui.knob','angularChart'
 
 
 	])

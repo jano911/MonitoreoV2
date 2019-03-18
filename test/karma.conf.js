@@ -58,6 +58,9 @@ module.exports = function(config) {
       'bower_components/ng-knob/dist/ng-knob.js',
       'bower_components/rickshaw/rickshaw.js',
       'bower_components/angular-rickshaw/rickshaw.js',
+      'bower_components/c3/c3.js',
+      'bower_components/angular-chart/angular-chart.js',
+      'bower_components/highcharts/highcharts.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'app/scripts/**/*.js',
