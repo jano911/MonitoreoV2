@@ -15,7 +15,8 @@ angular.module('softvFrostApp')
 			var config = {
 				headers: {
 					'Authorization': $localStorage.currentUser.token
-				}
+				},
+				Bloquea: true
 			};
 			$http.post(globalService.getUrl() + paths.GetIPCliente, parametros, config).then(function(response) {
 				deferred.resolve(response.data);
@@ -30,7 +31,8 @@ angular.module('softvFrostApp')
 			var config = {
 				headers: {
 					'Authorization': $localStorage.currentUser.token
-				}
+				},
+				Bloquea: true
 			};
 			$http.post(globalService.getUrl() + paths.GetConsumoActual, parametros, config).then(function(response) {
 				deferred.resolve(response.data);
@@ -45,7 +47,8 @@ angular.module('softvFrostApp')
 			var config = {
 				headers: {
 					'Authorization': $localStorage.currentUser.token
-				}
+				},
+				Bloquea: true
 			};
 			$http.post(globalService.getUrl() + paths.GetListaCablemodem, parametros, config).then(function(response) {
 				deferred.resolve(response.data);
@@ -60,7 +63,8 @@ angular.module('softvFrostApp')
 			var config = {
 				headers: {
 					'Authorization': $localStorage.currentUser.token
-				}
+				},
+				Bloquea: true
 			};
 			$http.post(globalService.getUrl() + paths.GetHistorialConsumo, parametros, config).then(function(response) {
 				deferred.resolve(response.data);
@@ -75,7 +79,8 @@ angular.module('softvFrostApp')
 			var config = {
 				headers: {
 					'Authorization': $localStorage.currentUser.token
-				}
+				},
+				Bloquea: true
 			};
 			$http.post(globalService.getUrl() + paths.GetDatosCliente, parametros, config).then(function(response) {
 				deferred.resolve(response.data);

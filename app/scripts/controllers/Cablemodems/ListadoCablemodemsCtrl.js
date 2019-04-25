@@ -1,7 +1,7 @@
 'use strict';
 angular.module('softvFrostApp').controller('ListadoCablemodemsCtrl', ListadoCablemodemsCtrl);
 
-function ListadoCablemodemsCtrl($state, CablemodemFactory, $timeout, AdministracionFactory, $uibModal, $scope) {
+function ListadoCablemodemsCtrl($state, CablemodemFactory, $timeout, AdministracionFactory, $uibModal) {
 
   function Init() {
     /*AdministracionFactory.GetCMTSLista().then(function (data) {
@@ -21,11 +21,9 @@ function ListadoCablemodemsCtrl($state, CablemodemFactory, $timeout, Administrac
       vm.rowCablemodems = data.GetListaCablemodemResult;
     });
   }
-  $scope.MAC = 'Prueba';
   function DetalleCablemodem(object) {
     //console.log(object);
     vm.MAC = object.MAC;
-    $scope.MAC = object.MAC;
     var modalInstance = $uibModal.open({
       animation: true,
       ariaLabelledBy: 'modal-title',
@@ -45,11 +43,10 @@ function ListadoCablemodemsCtrl($state, CablemodemFactory, $timeout, Administrac
 
   }
 
-  $scope.MAC = 'Prueba';
   function ConsumoTiempoReal(object) {
     //console.log(object);
     vm.MAC = object.MAC;
-    $scope.MAC = object.MAC;
+    //console.log(object);
     var modalInstance = $uibModal.open({
       animation: true,
       ariaLabelledBy: 'modal-title',
@@ -75,7 +72,7 @@ function ListadoCablemodemsCtrl($state, CablemodemFactory, $timeout, Administrac
   vm.ConsumoTiempoReal = ConsumoTiempoReal;
   Init();
 }
-angular.module('softvFrostApp').directive("chartCanvas", ['$document', function () {
+/*angular.module('softvFrostApp').directive("chartCanvas", ['$document', function () {
   return {
     restrict: "E",
     scope: {
@@ -158,4 +155,4 @@ angular.module('softvFrostApp').directive("chartCanvas", ['$document', function 
 
     }
   }
-}])
+}])*/

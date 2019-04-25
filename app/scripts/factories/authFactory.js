@@ -13,7 +13,8 @@ angular.module('softvFrostApp')
 			var config = {
 				headers: {
 					'Authorization': 'Basic ' + token
-				}
+				},
+				Bloquea: true
 			};
 			$http.post(globalService.getUrl() + paths.login, JSON.stringify(Parametros), config)
 				.then(function(response) {

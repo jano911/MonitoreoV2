@@ -728,7 +728,7 @@ angular.module('softvFrostApp').config(["$stateProvider", function($stateProvide
 'use strict';
 angular.module('softvFrostApp').controller('ListadoCablemodemsCtrl', ListadoCablemodemsCtrl);
 
-function ListadoCablemodemsCtrl($state, CablemodemFactory, $timeout, AdministracionFactory, $uibModal, $scope) {
+function ListadoCablemodemsCtrl($state, CablemodemFactory, $timeout, AdministracionFactory, $uibModal) {
 
   function Init() {
     /*AdministracionFactory.GetCMTSLista().then(function (data) {
@@ -748,11 +748,9 @@ function ListadoCablemodemsCtrl($state, CablemodemFactory, $timeout, Administrac
       vm.rowCablemodems = data.GetListaCablemodemResult;
     });
   }
-  $scope.MAC = 'Prueba';
   function DetalleCablemodem(object) {
     //console.log(object);
     vm.MAC = object.MAC;
-    $scope.MAC = object.MAC;
     var modalInstance = $uibModal.open({
       animation: true,
       ariaLabelledBy: 'modal-title',
@@ -772,11 +770,10 @@ function ListadoCablemodemsCtrl($state, CablemodemFactory, $timeout, Administrac
 
   }
 
-  $scope.MAC = 'Prueba';
   function ConsumoTiempoReal(object) {
     //console.log(object);
     vm.MAC = object.MAC;
-    $scope.MAC = object.MAC;
+    //console.log(object);
     var modalInstance = $uibModal.open({
       animation: true,
       ariaLabelledBy: 'modal-title',
@@ -802,8 +799,8 @@ function ListadoCablemodemsCtrl($state, CablemodemFactory, $timeout, Administrac
   vm.ConsumoTiempoReal = ConsumoTiempoReal;
   Init();
 }
-ListadoCablemodemsCtrl.$inject = ["$state", "CablemodemFactory", "$timeout", "AdministracionFactory", "$uibModal", "$scope"];
-angular.module('softvFrostApp').directive("chartCanvas", ['$document', function () {
+ListadoCablemodemsCtrl.$inject = ["$state", "CablemodemFactory", "$timeout", "AdministracionFactory", "$uibModal"];
+/*angular.module('softvFrostApp').directive("chartCanvas", ['$document', function () {
   return {
     restrict: "E",
     scope: {
@@ -812,7 +809,7 @@ angular.module('softvFrostApp').directive("chartCanvas", ['$document', function 
     bindToController: true,
     template: '<div id="chart_container"><div id="chart" class="rickshaw_graph"></div><div id="legend_container"><div id="smoother" title="Smoothing"></div><div id="legend" class="rickshaw_legend"></div></div><div id="slider"></div></div>',
     replace: true,
-    controller: ["CablemodemFactory", function (CablemodemFactory) {
+    controller: function (CablemodemFactory) {
 
       this.$onInit = function () {
         //Grafica nueva
@@ -884,9 +881,9 @@ angular.module('softvFrostApp').directive("chartCanvas", ['$document', function 
 
 
 
-    }]
+    }
   }
-}])
+}])*/
 
 'use strict';
 angular.module('softvFrostApp').controller('CMTSCtrl', CMTSCtrl);
@@ -1402,7 +1399,8 @@ angular.module('softvFrostApp')
 			var config = {
 				headers: {
 					'Authorization': $localStorage.currentUser.token
-				}
+				},
+				Bloquea: true
 			};
 			$http.post(globalService.getUrl() + paths.GetIPCliente, parametros, config).then(function(response) {
 				deferred.resolve(response.data);
@@ -1417,7 +1415,8 @@ angular.module('softvFrostApp')
 			var config = {
 				headers: {
 					'Authorization': $localStorage.currentUser.token
-				}
+				},
+				Bloquea: true
 			};
 			$http.post(globalService.getUrl() + paths.GetConsumoActual, parametros, config).then(function(response) {
 				deferred.resolve(response.data);
@@ -1432,7 +1431,8 @@ angular.module('softvFrostApp')
 			var config = {
 				headers: {
 					'Authorization': $localStorage.currentUser.token
-				}
+				},
+				Bloquea: true
 			};
 			$http.post(globalService.getUrl() + paths.GetListaCablemodem, parametros, config).then(function(response) {
 				deferred.resolve(response.data);
@@ -1447,7 +1447,8 @@ angular.module('softvFrostApp')
 			var config = {
 				headers: {
 					'Authorization': $localStorage.currentUser.token
-				}
+				},
+				Bloquea: true
 			};
 			$http.post(globalService.getUrl() + paths.GetHistorialConsumo, parametros, config).then(function(response) {
 				deferred.resolve(response.data);
@@ -1462,7 +1463,8 @@ angular.module('softvFrostApp')
 			var config = {
 				headers: {
 					'Authorization': $localStorage.currentUser.token
-				}
+				},
+				Bloquea: true
 			};
 			$http.post(globalService.getUrl() + paths.GetDatosCliente, parametros, config).then(function(response) {
 				deferred.resolve(response.data);
@@ -1817,7 +1819,7 @@ dashboardCtrl.$inject = ["AdministracionFactory", "$state"];
 'use strict';
 angular.module('softvFrostApp').controller('CMTSDataCtrl', CMTSDataCtrl);
 
-function CMTSDataCtrl(AdministracionFactory, $state, CMTSFactory, $timeout) {
+function CMTSDataCtrl(CMTSFactory, $timeout, $localStorage, globalService, $interval, $http, $scope, $uibModal) {
 
   function Init() {
     /*AdministracionFactory.GetCMTSLista().then(function (data) {
@@ -1830,7 +1832,7 @@ function CMTSDataCtrl(AdministracionFactory, $state, CMTSFactory, $timeout) {
       skin: {
         type: 'tron'
       },
-      size: 300,
+      size: 250,
       unit: "%",
       barWidth: 40,
       trackColor: 'rgba(255,0,0,.1)',
@@ -1845,7 +1847,8 @@ function CMTSDataCtrl(AdministracionFactory, $state, CMTSFactory, $timeout) {
         width: 3
       },
       step: 5,
-      displayPrevious: true
+      displayPrevious: true,
+      readonly: true
     };
 
     vm.totalMemoria = 0;
@@ -1853,7 +1856,7 @@ function CMTSDataCtrl(AdministracionFactory, $state, CMTSFactory, $timeout) {
     vm.optionsMemoria = {
       startAngle: 30,
       endAngle: 330,
-      size: 300,
+      size: 250,
       unit: 'MB',
       trackColor: "rgba(162,121,143,1)",
       barColor: 'rgba(102,0,204,.5)',
@@ -1864,7 +1867,8 @@ function CMTSDataCtrl(AdministracionFactory, $state, CMTSFactory, $timeout) {
         text: 'Memoria Disponible'
       },
       max: 0,
-      min: 0
+      min: 0,
+      readonly: true
     };
 
     vm.totalHDD = 0;
@@ -1872,7 +1876,7 @@ function CMTSDataCtrl(AdministracionFactory, $state, CMTSFactory, $timeout) {
     vm.optionsHDD = {
       startAngle: 30,
       endAngle: 330,
-      size: 300,
+      size: 250,
       unit: 'MB',
       trackColor: "rgba(162,121,143,1)",
       barColor: 'rgba(102,0,204,.5)',
@@ -1883,7 +1887,8 @@ function CMTSDataCtrl(AdministracionFactory, $state, CMTSFactory, $timeout) {
         text: 'HDD Disponible'
       },
       max: 0,
-      min: 0
+      min: 0,
+      readonly: true
     };
 
     var parametros = {};
@@ -1891,7 +1896,7 @@ function CMTSDataCtrl(AdministracionFactory, $state, CMTSFactory, $timeout) {
     CMTSFactory.GetCMTSDatos(parametros).then(function (data) {
       //console.log(data);
       vm.CMTSData = data.GetCMTSDatosResult;
-      
+
       vm.totalMemoria = parseInt(vm.CMTSData.TotalMemory);
       vm.optionsMemoria.max = vm.totalMemoria;
       vm.valueMemoria = parseInt(vm.CMTSData.FreeMemory);
@@ -1901,24 +1906,114 @@ function CMTSDataCtrl(AdministracionFactory, $state, CMTSFactory, $timeout) {
       vm.valueHDD = parseInt(vm.CMTSData.FreehddSpace);
 
       vm.valueCargaCPU = parseInt(vm.CMTSData.CargaCPU);
-      
-     
-      /*vm.totalMemoria = 250;
-      vm.optionsMemoria.max = 250;
-      vm.valueMemoria = 50; 
 
-      vm.totalMemoria = 250;
-      vm.optionsMemoria.max = 250;
-      vm.valueMemoria = 50;
+      var bajada = [];
+      var subida = [];
 
-      vm.totalHDD = 500;
-      vm.optionsHDD.max = 500;
-      vm.valueHDD = 300;
+      vm.chart = Highcharts.chart('container', {
+        chart: {
+          type: 'spline',
+          animation: Highcharts.svg, // don't animate in old IE
+          marginRight: 10,
+          events: {
+            load: function () {
 
-      vm.valueCargaCPU = 50;*/
+              // set up the updating of the chart each second
+              vm.cmtsInterval = setInterval(function () {
+                var parametros2 = {};
+                parametros2.Interface = 'sfp1';
+                var config = {
+                  headers: {
+                    'Authorization': $localStorage.currentUser.token
+                  },
+                  Bloquea: false
+                };
+                $http.post(globalService.getUrl() + '/Cmts/GetCMTSConsumoInterface', parametros2, config).then(function (response) {
+                  var consumo = response.data.GetCMTSConsumoInterfaceResult;
+                  console.log(consumo);
+                  var x = (new Date()).getTime(); // current time
+                  vm.chart.series[0].addPoint([x, parseFloat(consumo.tx)], false, true);
+                  vm.chart.series[1].addPoint([x, parseFloat(consumo.Rx)], false, true);
+                  vm.chart.redraw();
+                });
+              }, 2000);
+            }
+          }
+        },
+
+        time: {
+          useUTC: false
+        },
+
+        title: {
+          text: 'Consumo Actual Interface sfp1'
+        },
+        xAxis: {
+          type: 'datetime',
+          tickPixelInterval: 150
+        },
+        yAxis: {
+          title: {
+            text: 'MB'
+          },
+          plotLines: [{
+            value: 0,
+            width: 1,
+            color: '#808080'
+          }]
+        },
+        tooltip: {
+          headerFormat: '<b>{series.name}</b><br/>',
+          pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}'
+        },
+        legend: {
+          enabled: false
+        },
+        exporting: {
+          enabled: false
+        },
+        series: [{
+          name: 'Bajada',
+          data: (function () {
+            // generate an array of random data
+            var data = [],
+              time = (new Date()).getTime(),
+              i;
+
+            for (i = -25; i <= 0; i += 1) {
+              data.push({
+                x: time + i * 2000,
+                y: 0
+              });
+            }
+            return data;
+          }())
+        },
+        {
+          name: 'Subida',
+          data: (function () {
+            // generate an array of random data
+            var data = [],
+              time = (new Date()).getTime(),
+              i;
+
+            for (i = -25; i <= 0; i += 1) {
+              data.push({
+                x: time + i * 2000,
+                y: 0
+              });
+            }
+            return data;
+          }())
+        }]
+      });
     });
 
   }
+
+  $scope.$on("$destroy", function () {
+    clearInterval(vm.cmtsInterval);
+  });
 
   function CambiaCMTS(CMTS) {
     //Descoloreamos el anterior
@@ -1964,12 +2059,230 @@ function CMTSDataCtrl(AdministracionFactory, $state, CMTSFactory, $timeout) {
     });
   }
 
+  function HistorialConsumo() {
+    var interfaz = 'sfp1';
+    var modalInstance = $uibModal.open({
+      animation: true,
+      ariaLabelledBy: 'modal-title',
+      ariaDescribedBy: 'modal-body',
+      templateUrl: 'views/CMTS/CMTSConsumoHistorial.html',
+      controller: 'CMTSConsumoHistorialCtrl',
+      controllerAs: 'ctrl',
+      backdrop: 'static',
+      keyboard: false,
+      size: 'lg',
+      resolve: {
+        interfaz: function () {
+          return interfaz;
+        }
+      }
+    });
+
+  }
+
   var vm = this;
   vm.cmtses = {};
   vm.CambiaCMTS = CambiaCMTS;
+  vm.HistorialConsumo = HistorialConsumo;
   Init();
 }
-CMTSDataCtrl.$inject = ["AdministracionFactory", "$state", "CMTSFactory", "$timeout"];
+CMTSDataCtrl.$inject = ["CMTSFactory", "$timeout", "$localStorage", "globalService", "$interval", "$http", "$scope", "$uibModal"];
+
+'use strict';
+angular
+    .module('softvFrostApp')
+    .controller('CMTSConsumoHistorialCtrl', ["$filter", "$uibModalInstance", "$uibModal", "interfaz", "$rootScope", "ngNotify", "$document", "CMTSFactory", function ($filter, $uibModalInstance, $uibModal, interfaz, $rootScope, ngNotify, $document, CMTSFactory) {
+
+        function initialData() {
+            vm.Interaz = interfaz;
+            var obj = {};
+            obj.MAC = vm.Interaz;
+            obj.FechaInicio = '19000101';
+            obj.FechaFin = '19000101';
+            CMTSFactory.GetHistorialConsumoCMTSInterface(obj).then(function (data) {
+                var historico = data.GetHistorialConsumoCMTSInterfaceResult;
+                var bajada = [];
+                var subida = [];
+                historico.forEach(function (item, index) {
+                    var x = new Date(parseInt(item.Fecha) * 1000);
+                    var bAux = [
+                        x.getTime(),
+                        parseFloat(item.tx)
+                    ];
+                    var sAux = [
+                        x.getTime(),
+                        parseFloat(item.Rx)
+                    ];
+                    bajada.push(bAux);
+                    subida.push(sAux);
+                });
+                //Time series chart
+                vm.chart = Highcharts.chart('container2', {
+                    chart: {
+                        zoomType: 'x'
+                    },
+                    title: {
+                        text: 'Historial de Consumo Interface ' + vm.Interaz
+                    },
+                    subtitle: {
+                        text: document.ontouchstart === undefined ?
+                            'Haz click y arrastra en el área de la gráfica para hacer zoom' : ''
+                    },
+                    xAxis: {
+                        type: 'datetime'
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'MB'
+                        }
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    plotOptions: {
+                        area: {
+                            fillColor: {
+                                linearGradient: {
+                                    x1: 0,
+                                    y1: 0,
+                                    x2: 0,
+                                    y2: 1
+                                },
+                                stops: [
+                                    [0, Highcharts.getOptions().colors[0]],
+                                    [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                                ]
+                            },
+                            marker: {
+                                radius: 1
+                            },
+                            lineWidth: 1,
+                            states: {
+                                hover: {
+                                    lineWidth: 1
+                                }
+                            },
+                            threshold: null
+                        }
+                    },
+
+                    series: [{
+                        type: 'line',
+                        name: 'Bajada',
+                        data: bajada
+                    }]
+                });
+
+                vm.chart.addSeries({
+                    name: 'Subida',
+                    data: subida
+                });
+            });
+
+        }
+
+        function cancel() {
+            $uibModalInstance.dismiss('cancel');
+        }
+
+        function ok() {
+
+        }
+
+        function FiltraResultados() {
+            var obj = {};
+            obj.MAC = vm.Interaz;
+            obj.FechaInicio = vm.fechaInicio;
+            obj.FechaFin = vm.fechaFin;
+            CMTSFactory.GetHistorialConsumoCMTSInterface(obj).then(function (data) {
+                var historico = data.GetHistorialConsumoCMTSInterfaceResult;
+                var bajada = [];
+                var subida = [];
+                historico.forEach(function (item, index) {
+                    var x = new Date(parseInt(item.Fecha) * 1000);
+                    var bAux = [
+                        x.getTime(),
+                        parseFloat(item.tx)
+                    ];
+                    var sAux = [
+                        x.getTime(),
+                        parseFloat(item.Rx)
+                    ];
+                    bajada.push(bAux);
+                    subida.push(sAux);
+                });
+                //Time series chart
+                vm.chart = Highcharts.chart('container2', {
+                    chart: {
+                        zoomType: 'x'
+                    },
+                    title: {
+                        text: 'Historial de Consumo Interface ' + vm.Interaz
+                    },
+                    subtitle: {
+                        text: document.ontouchstart === undefined ?
+                            'Haz click y arrastra en el área de la gráfica para hacer zoom' : ''
+                    },
+                    xAxis: {
+                        type: 'datetime'
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'MB'
+                        }
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    plotOptions: {
+                        area: {
+                            fillColor: {
+                                linearGradient: {
+                                    x1: 0,
+                                    y1: 0,
+                                    x2: 0,
+                                    y2: 1
+                                },
+                                stops: [
+                                    [0, Highcharts.getOptions().colors[0]],
+                                    [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                                ]
+                            },
+                            marker: {
+                                radius: 1
+                            },
+                            lineWidth: 1,
+                            states: {
+                                hover: {
+                                    lineWidth: 1
+                                }
+                            },
+                            threshold: null
+                        }
+                    },
+
+                    series: [{
+                        type: 'line',
+                        name: 'Bajada',
+                        data: bajada
+                    }]
+                });
+
+                vm.chart.addSeries({
+                    name: 'Subida',
+                    data: subida
+                });
+            });
+        }
+
+        var vm = this;
+        vm.cancel = cancel;
+        vm.ok = ok;
+        initialData();
+        vm.fechaInicio = new Date();
+        vm.fechaFin = new Date();
+        vm.FiltraResultados = FiltraResultados;
+    }]);
 
 'use strict';
 angular
@@ -1987,24 +2300,27 @@ angular
 
         var obj = {};
         obj.MAC = vm.Cablemodem.MAC;
+        obj.FechaInicio = '19000101';
+        obj.FechaFin = '19000101';
         CablemodemFactory.GetHistorialConsumo(obj).then(function (data) {
           var historico = data.GetHistorialConsumoResult;
           var bajada = [];
           var subida = [];
           historico.forEach(function (item, index) {
+            var x = new Date(parseInt(item.Fecha) * 1000);
             var bAux = [
-              parseFloat(item.Fecha),
-              parseFloat(item.Rx)
+              x.getTime(),
+              parseFloat(item.tx)
             ];
             var sAux = [
-              parseFloat(item.Fecha),
-              parseFloat(item.tx)
+              x.getTime(),
+              parseFloat(item.Rx)
             ];
             bajada.push(bAux);
             subida.push(sAux);
           });
-
-          var chart = Highcharts.chart('container', {
+          //Time series chart
+          vm.chart = Highcharts.chart('container', {
             chart: {
               zoomType: 'x'
             },
@@ -2041,7 +2357,7 @@ angular
                   ]
                 },
                 marker: {
-                  radius: 2
+                  radius: 1
                 },
                 lineWidth: 1,
                 states: {
@@ -2060,7 +2376,7 @@ angular
             }]
           });
 
-          chart.addSeries({
+          vm.chart.addSeries({
             name: 'Subida',
             data: subida
           });
@@ -2077,11 +2393,99 @@ angular
 
     }
 
+    function FiltraResultados() {
+      var obj = {};
+      obj.MAC = vm.Cablemodem.MAC;
+      obj.FechaInicio = vm.fechaInicio;
+      obj.FechaFin = vm.fechaFin;
+      CablemodemFactory.GetHistorialConsumo(obj).then(function (data) {
+        var historico = data.GetHistorialConsumoResult;
+        var bajada = [];
+        var subida = [];
+        historico.forEach(function (item, index) {
+          var x = new Date(parseInt(item.Fecha) * 1000);
+          var bAux = [
+            x.getTime(),
+            parseFloat(item.tx)
+          ];
+          var sAux = [
+            x.getTime(),
+            parseFloat(item.Rx)
+          ];
+          bajada.push(bAux);
+          subida.push(sAux);
+        });
+        //Time series chart
+        vm.chart = Highcharts.chart('container', {
+          chart: {
+            zoomType: 'x'
+          },
+          title: {
+            text: 'Historial de Consumo'
+          },
+          subtitle: {
+            text: document.ontouchstart === undefined ?
+              'Haz click y arrastra en el área de la gráfica para hacer zoom' : ''
+          },
+          xAxis: {
+            type: 'datetime'
+          },
+          yAxis: {
+            title: {
+              text: 'MB'
+            }
+          },
+          legend: {
+            enabled: false
+          },
+          plotOptions: {
+            area: {
+              fillColor: {
+                linearGradient: {
+                  x1: 0,
+                  y1: 0,
+                  x2: 0,
+                  y2: 1
+                },
+                stops: [
+                  [0, Highcharts.getOptions().colors[0]],
+                  [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                ]
+              },
+              marker: {
+                radius: 1
+              },
+              lineWidth: 1,
+              states: {
+                hover: {
+                  lineWidth: 1
+                }
+              },
+              threshold: null
+            }
+          },
+
+          series: [{
+            type: 'line',
+            name: 'Bajada',
+            data: bajada
+          }]
+        });
+
+        vm.chart.addSeries({
+          name: 'Subida',
+          data: subida
+        });
+      });
+    }
+
     var vm = this;
     vm.cancel = cancel;
     vm.ok = ok;
     initialData();
-
+    vm.fechaInicio = new Date();
+    vm.fechaFin = new Date();
+    vm.FiltraResultados = FiltraResultados;
   }]);
 
 'use strict';
@@ -2097,7 +2501,6 @@ angular
             console.log('parametros',parametros);
             CablemodemFactory.GetDatosCliente(parametros).then(function (data) {
                 vm.Cliente = data.GetDatosClienteResult;
-                //8014A8963E8D
                 parametros.MAC = '';
                 for (var i=0; i < vm.Cablemodem.MAC.length; i++) {
                     console.log(vm.Cablemodem.MAC.charAt(i)); 
@@ -2129,7 +2532,8 @@ angular
                                         var config = {
                                             headers: {
                                                 'Authorization': $localStorage.currentUser.token
-                                            }
+                                            },
+                                            Bloquea: false
                                         };
                                         $http.post(globalService.getUrl() + '/Cablemodem/GetConsumoActual', parametros2, config).then(function (response) {
                                             var consumo = response.data.GetConsumoActualResult;
@@ -2248,7 +2652,7 @@ angular
         initialData();
 
     }]);
-angular.module('softvFrostApp').directive("chartRealtime", ['$document', function () {
+/*angular.module('softvFrostApp').directive("chartRealtime", ['$document', function () {
     return {
         restrict: "E",
         scope: {
@@ -2258,7 +2662,7 @@ angular.module('softvFrostApp').directive("chartRealtime", ['$document', functio
         bindToController: true,
         template: '<div id="chart_container"><div id="chart" class="rickshaw_graph"></div><div id="legend_container"><div id="smoother" title="Smoothing"></div><div id="legend" class="rickshaw_legend"></div></div></div>',
         replace: true,
-        controller: ["$interval", "globalService", "$http", "$localStorage", "$scope", function ($interval, globalService, $http, $localStorage, $scope) {
+        controller: function ($interval, globalService, $http, $localStorage, $scope) {
             var vm = this;
             this.$onInit = function () {
                 //Grafica nueva
@@ -2337,9 +2741,9 @@ angular.module('softvFrostApp').directive("chartRealtime", ['$document', functio
             $scope.CierraDirectiva = function () {
                 $interval.cancel(vm.oneTimer);
             };
-        }]
+        }
     }
-}])
+}])*/
 'use strict';
 angular.module('softvFrostApp')
 
@@ -2348,7 +2752,7 @@ angular.module('softvFrostApp')
     //rutas servidor producción
     svc.getUrl = function () {
       return 'http://192.168.50.10:8081/SoftvWCFService.svc';
-      //return 'http://localhost:8086/SoftvWCFService.svc';
+      //return 'http://localhost:64481/SoftvWCFService.svc';
     };
 
     return svc;
@@ -2369,7 +2773,8 @@ angular.module('softvFrostApp')
 			var config = {
 				headers: {
 					'Authorization': 'Basic ' + token
-				}
+				},
+				Bloquea: true
 			};
 			$http.post(globalService.getUrl() + paths.login, JSON.stringify(Parametros), config)
 				.then(function(response) {
@@ -3751,7 +4156,24 @@ angular.module('softvFrostApp')
 	.factory('CMTSFactory', ["$http", "$q", "$window", "globalService", "$localStorage", function($http, $q, $window, globalService, $localStorage) {
 		var factory = {};
 		var paths = {
-			GetCMTSDatos: '/CMTS/GetCMTSDatos'
+			GetCMTSDatos: '/CMTS/GetCMTSDatos',
+			GetHistorialConsumoCMTSInterface: '/CMTS/GetHistorialConsumoCMTSInterface'
+		};
+
+		factory.GetHistorialConsumoCMTSInterface = function(parametros) {
+			var deferred = $q.defer();
+			var config = {
+				headers: {
+					'Authorization': $localStorage.currentUser.token
+				},
+				Bloquea: true
+			};
+			$http.post(globalService.getUrl() + paths.GetHistorialConsumoCMTSInterface, parametros, config).then(function(response) {
+				deferred.resolve(response.data);
+			}).catch(function(data) {
+				deferred.reject(data);
+			});
+			return deferred.promise;
 		};
 
 		factory.GetCMTSDatos = function(parametros) {
@@ -3759,7 +4181,8 @@ angular.module('softvFrostApp')
 			var config = {
 				headers: {
 					'Authorization': $localStorage.currentUser.token
-				}
+				},
+				Bloquea: true
 			};
 			$http.post(globalService.getUrl() + paths.GetCMTSDatos, parametros, config).then(function(response) {
 				deferred.resolve(response.data);
@@ -3790,8 +4213,67 @@ angular.module('softvFrostApp').run(['$templateCache', function($templateCache) 
   );
 
 
+  $templateCache.put('views/CMTS/CMTSConsumoHistorial.html',
+    "<div class=\"modal-header\"> <button class=\"close\" aria-label=\"Close\" type=\"button\" ng-click=\"ctrl.cancel()\">×</button> <h4 class=\"modal-title\">Historial de Consumo</h4> </div> <div class=\"modal-body\" style=\"padding-top:20px\"> <div class=\"row\"> <div class=\"col-md-5\"> <div class=\"col-md-4\"> <label for=\"fechaInicio\">Fecha Inicio: </label> </div> <div class=\"input-group\"> <input class=\"form-control\" ng-model=\"ctrl.fechaInicio\" type=\"date\"> </div> </div> <div class=\"col-md-5\"> <div class=\"col-md-4\"> <label for=\"fechaInicio\">Fecha Fin: </label> </div> <div class=\"input-group\"> <input class=\"form-control\" ng-model=\"ctrl.fechaFin\" type=\"date\"> </div> </div> <div class=\"col-md-2\"> <div class=\"input-group\"> <a class=\"btn btn-primary btn-sm\" ng-click=\"ctrl.FiltraResultados()\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Filtrar Resultados\" data-original-title=\"Filtrar Resultados\"> <i class=\"fa fa-search\"></i> Buscar</a> </div> </div> </div> <div class=\"row\"> <!--<chart-canvas mac=\"{{ctrl.Cablemodem.MAC}}\" style=\"margin-left:15px;\"></chart-canvas>--> <div id=\"container2\" style=\"min-width: 310px; height: 400px; margin: 0 auto\"></div> </div> </div> <div class=\"modal-footer\"> <button class=\"btn btn-default\" type=\"button\" ng-click=\"ctrl.cancel()\">Cerrar</button> </div>"
+  );
+
+
   $templateCache.put('views/CMTS/CMTSData.html',
-    "<div class=\"card\" style=\"margin-top:10px\"> <div class=\"card-head style-default-light\" style=\"padding-top:10px; padding-left:10px\"> <header> <strong style=\"font-weight:bold; border:none; margin-left:10px\">Estadísticas Mikrotik</strong> </header> </div> <div class=\"card-body\"> <div class=\"panel\"> <div class=\"row\"> <div class=\"col-md-4 text-center\"> <ui-knob value=\"$ctrl.valueCargaCPU\" options=\"$ctrl.optionsCargaCPU\"></ui-knob> </div> <div class=\"col-md-4 text-center\"> <ui-knob value=\"$ctrl.valueMemoria\" options=\"$ctrl.optionsMemoria\"></ui-knob> </div> <div class=\"col-md-4 text-center\"> <ui-knob value=\"$ctrl.valueHDD\" options=\"$ctrl.optionsHDD\"></ui-knob> </div> </div> </div> </div> </div>"
+    "<!--<div class=\"card\" style=\"margin-top:10px;\">\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "  <div class=\"card-head style-default-light\" style=\"padding-top:10px; padding-left:10px;\">\r" +
+    "\n" +
+    "    <header>\r" +
+    "\n" +
+    "      <strong style=\"font-weight:bold; border:none; margin-left:10px;\">Estadísticas Mikrotik</strong>\r" +
+    "\n" +
+    "    </header>\r" +
+    "\n" +
+    "  </div>\r" +
+    "\n" +
+    "  <div class=\"card-body\">\r" +
+    "\n" +
+    "    <div class=\"panel\">\r" +
+    "\n" +
+    "      <div class=\"row\">\r" +
+    "\n" +
+    "        <div class=\"col-md-4 text-center\">\r" +
+    "\n" +
+    "          <ui-knob value=\"$ctrl.valueCargaCPU\" options=\"$ctrl.optionsCargaCPU\"></ui-knob>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "        <div class=\"col-md-4 text-center\">\r" +
+    "\n" +
+    "          <ui-knob value=\"$ctrl.valueMemoria\" options=\"$ctrl.optionsMemoria\"></ui-knob>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "        <div class=\"col-md-4 text-center\">\r" +
+    "\n" +
+    "          <ui-knob value=\"$ctrl.valueHDD\" options=\"$ctrl.optionsHDD\"></ui-knob>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "      </div>\r" +
+    "\n" +
+    "      <div class=\"row\">\r" +
+    "\n" +
+    "        <div class=\"col-md-12\">\r" +
+    "\n" +
+    "          <div id=\"container\" style=\"min-width: 310px; height: 400px; margin: 0 auto\"></div>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "      </div>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "  </div>\r" +
+    "\n" +
+    "</div>--> <section style=\"margin-top:10px\"> <div class=\"row\"> <div class=\"col-md-12\"> <div class=\"card card-outlined style-gray-light\"> <div class=\"card-head card-head-sm style-info\"> <header>Consumo en Tiempo Real</header> <div class=\"tools\"> <button style=\"margin-top:7px\" class=\"btn-sm btn-block ink-reaction btn-default-dark\" ng-click=\"$ctrl.HistorialConsumo()\"><i class=\"fa fa-area-chart\"></i> Historial</button> </div> </div> <div class=\"card-body style-default-bright\"> <div class=\"row\"> <div id=\"container\" style=\"min-width: 310px; height: 400px; margin: 0 auto\"></div> </div> </div> </div> </div> </div> <div class=\"row\"> <div class=\"col-lg-4\"> <div class=\"card card-outlined style-warning\"> <div class=\"card-head card-head-xs style-warning\"> <header>Carga de CPU</header> </div> <div class=\"card-body style-default-bright text-center\"> <ui-knob value=\"$ctrl.valueCargaCPU\" options=\"$ctrl.optionsCargaCPU\"></ui-knob> </div> </div> </div> <div class=\"col-lg-4\"> <div class=\"card card-outlined style-danger\"> <div class=\"card-head card-head-xs style-danger\"> <header>Memoria Disponible</header> </div> <div class=\"card-body style-default-bright text-center\"> <ui-knob value=\"$ctrl.valueMemoria\" options=\"$ctrl.optionsMemoria\"></ui-knob> </div> </div> </div> <div class=\"col-lg-4\"> <div class=\"card card-outlined style-success\"> <div class=\"card-head card-head-xs style-success\"> <header>HDD Disponible</header> </div> <div class=\"card-body style-default-bright text-center\"> <ui-knob value=\"$ctrl.valueHDD\" options=\"$ctrl.optionsHDD\"></ui-knob> </div> </div> </div> </div> </section>"
   );
 
 
@@ -3822,7 +4304,7 @@ angular.module('softvFrostApp').run(['$templateCache', function($templateCache) 
     "\n" +
     "    </div>\r" +
     "\n" +
-    "  </div>--> <div class=\"row text-center\"> <h4 class=\"text-info\">Historial de Consumo</h4> </div> <div class=\"row\"> <!--<chart-canvas mac=\"{{ctrl.Cablemodem.MAC}}\" style=\"margin-left:15px;\"></chart-canvas>--> <div id=\"container\" style=\"min-width: 310px; height: 400px; margin: 0 auto\"></div> </div> </div> <div class=\"modal-footer\"> <button class=\"btn btn-default\" type=\"button\" ng-click=\"ctrl.cancel()\">Cerrar</button> </div>"
+    "  </div>--> <div class=\"row text-center\"> <h4 class=\"text-info\">Historial de Consumo</h4> </div> <div class=\"row\"> <div class=\"col-md-5\"> <div class=\"col-md-4\"> <label for=\"fechaInicio\">Fecha Inicio: </label> </div> <div class=\"input-group\"> <input class=\"form-control\" ng-model=\"ctrl.fechaInicio\" type=\"date\"> </div> </div> <div class=\"col-md-5\"> <div class=\"col-md-4\"> <label for=\"fechaInicio\">Fecha Fin: </label> </div> <div class=\"input-group\"> <input class=\"form-control\" ng-model=\"ctrl.fechaFin\" type=\"date\"> </div> </div> <div class=\"col-md-2\"> <div class=\"input-group\"> <a class=\"btn btn-primary btn-sm\" ng-click=\"ctrl.FiltraResultados()\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"Filtrar Resultados\" data-original-title=\"Filtrar Resultados\"> <i class=\"fa fa-search\"></i> Buscar</a> </div> </div> </div> <div class=\"row\"> <!--<chart-canvas mac=\"{{ctrl.Cablemodem.MAC}}\" style=\"margin-left:15px;\"></chart-canvas>--> <div id=\"container\" style=\"min-width: 310px; height: 400px; margin: 0 auto\"></div> </div> </div> <div class=\"modal-footer\"> <button class=\"btn btn-default\" type=\"button\" ng-click=\"ctrl.cancel()\">Cerrar</button> </div>"
   );
 
 
@@ -5354,13 +5836,23 @@ angular.module('softvFrostApp').run(['$templateCache', function($templateCache) 
     "\n" +
     "\r" +
     "\n" +
-    "  th{font-size: 10pt;}\r" +
+    "  th {\r" +
     "\n" +
-    "  td {font-size: 9.8pt;}\r" +
+    "    font-size: 10pt;\r" +
+    "\n" +
+    "  }\r" +
     "\n" +
     "\r" +
     "\n" +
-    "    .btn-csv {\r" +
+    "  td {\r" +
+    "\n" +
+    "    font-size: 9.8pt;\r" +
+    "\n" +
+    "  }\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "  .btn-csv {\r" +
     "\n" +
     "    background-color: #fff;\r" +
     "\n" +
@@ -5368,7 +5860,7 @@ angular.module('softvFrostApp').run(['$templateCache', function($templateCache) 
     "\n" +
     "    font-size: 11.5px;\r" +
     "\n" +
-    "    color:#008b45; \r" +
+    "    color: #008b45;\r" +
     "\n" +
     "  }\r" +
     "\n" +
@@ -5382,7 +5874,7 @@ angular.module('softvFrostApp').run(['$templateCache', function($templateCache) 
     "\n" +
     "    font-size: 11.5px;\r" +
     "\n" +
-    "    color:#8B0000;\r" +
+    "    color: #8B0000;\r" +
     "\n" +
     "\r" +
     "\n" +
@@ -5390,9 +5882,7 @@ angular.module('softvFrostApp').run(['$templateCache', function($templateCache) 
     "\n" +
     "\r" +
     "\n" +
-    ".btn-csv:hover\r" +
-    "\n" +
-    "{\r" +
+    "  .btn-csv:hover {\r" +
     "\n" +
     "    background-color: #008b45;\r" +
     "\n" +
@@ -5400,15 +5890,13 @@ angular.module('softvFrostApp').run(['$templateCache', function($templateCache) 
     "\n" +
     "    font-size: 11.5px;\r" +
     "\n" +
-    "    color:#fff;\r" +
+    "    color: #fff;\r" +
     "\n" +
-    "}\r" +
+    "  }\r" +
     "\n" +
     "\r" +
     "\n" +
-    ".btn-pdf:hover\r" +
-    "\n" +
-    "{\r" +
+    "  .btn-pdf:hover {\r" +
     "\n" +
     "    background-color: #8B0000;\r" +
     "\n" +
@@ -5416,11 +5904,11 @@ angular.module('softvFrostApp').run(['$templateCache', function($templateCache) 
     "\n" +
     "    font-size: 11.5px;\r" +
     "\n" +
-    "    color:#fff;\r" +
+    "    color: #fff;\r" +
     "\n" +
     "\r" +
     "\n" +
-    "}</style> <div id=\"pdfreportimages\" style=\"display:none\"> <img crossorigin=\"\" src=\"images/StarGoPng.png\" id=\"pdflogoimage\"> </div> <div class=\"card\" style=\"margin-top:20px;padding-bottom: 30px\"> <div class=\"card-head style-default-light\" style=\"padding-top:10px; padding-left:10px\"> <header> <strong style=\"font-weight:bold; border:none; margin-left:10px\">Reportes</strong> <br><small class=\"text-muted\" style=\"font-size:14px; margin-left:10px\"><i class=\"fa fa-home\" aria-hidden=\"true\"></i> Reportes>Movimientos</small> </header> <div class=\"tools\"> </div> </div> <div class=\"section-body\"> <div class=\"col-md-12\"> <div class=\"panel-heading\"> <div class=\"tools\"> <div class=\"panel-group\" id=\"suscriptor\"> <div class=\"row\"> <div class=\"col-md-3\"> <div style=\"float:left\" class=\"col-md-4\"> <label for=\"fechaInicio\">Fecha Inicio: </label> </div> <div class=\"input-group\"> <input class=\"form-control\" ng-model=\"$ctrl.fechaInicio\" type=\"date\"> </div> </div> <div class=\"col-md-3\"> <div style=\"float:left\" class=\"col-md-4\"> <label for=\"fechaInicio\">Fecha Fin: </label> </div> <div class=\"input-group\"> <input class=\"form-control\" ng-model=\"$ctrl.fechaFin\" type=\"date\"> </div> </div> <div class=\"col-md-5\"> <a class=\"btn btn-primary btn-sm\" ng-click=\"$ctrl.getReporteMovimientos()\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Buscar\"> <i class=\"fa fa-search\"></i> Buscar</a> <a class=\"btn btn-info btn-sm\" ng-click=\"$ctrl.limpiarFiltros();\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Limpiar filtros\"> <i class=\"fa fa-eraser\"></i>Limpiar </a> </div> </div> <!--end .panel --> </div> </div> </div> <div class=\"panel form-element-padding\" style=\"margin-top:-20px\"> <table st-table=\"$ctrl.displayedCollection4\" st-safe-src=\"$ctrl.rowCollection4\" class=\"table table-striped\" st-filtered-collection=\"$ctrl.filteredCollection\"> <thead> <tr> <th st-sort=\"SAN\">SAN </th> <th st-sort=\"Suscriptor\">Suscriptor</th> <th st-sort=\"Beam\">Beam</th> <th st-sort=\"SatellitedID\">Satellite</th> <th st-sort=\"Usuario\">Usuario</th> <th st-sort=\"FechaMovim\">Fecha <br>Movimiento </th> <th st-sort=\"ESN\">ESN</th> <th st-sort=\"Movimiento\">Movimiento </th> <th st-sort=\"Mensaje\">Mensaje </th> </tr> <tr> <th> <input st-search=\"SAN\" placeholder=\"SAN\" class=\"input-sm form-control\" type=\"search\"> </th> <th> <input st-search=\"Suscriptor\" placeholder=\"Suscriptor\" class=\"input-sm form-control\" type=\"search\"> </th> <th> <input st-search=\"Beam\" placeholder=\"Beam\" class=\"input-sm form-control\" type=\"search\"> </th> <th> <input st-search=\"SatellitedID\" placeholder=\"Satellite\" class=\"input-sm form-control\" type=\"search\"> </th> <th> <input st-search=\"Usuario\" placeholder=\"Usuario\" class=\"input-sm form-control\" type=\"search\"> </th> <th> <input st-search=\"FechaMovim\" placeholder=\"Fecha Movimiento\" class=\"input-sm form-control\" type=\"search\"> </th> <th> <input st-search=\"ESN\" placeholder=\"ESN\" class=\"input-sm form-control\" type=\"search\"> </th> <th> <input st-search=\"Movimiento\" placeholder=\"Movimiento\" class=\"input-sm form-control\" type=\"search\"> </th> <th> <input st-search=\"Mensaje\" placeholder=\"Mensaje\" class=\"input-sm form-control\" type=\"search\"> </th> </tr> </thead> <tbody> <tr dir-paginate=\"row in $ctrl.displayedCollection4|orderBy:sortKey:reverse|itemsPerPage:5\"> <td width=\"6%\">{{row.SAN}}</td> <td>{{row.Suscriptor}}</td> <td>{{row.Beam}}</td> <td>{{row.SatellitedID}}</td> <td>{{row.Usuario}}</td> <td>{{row.FechaMovim}}</td> <td>{{row.ESN}}</td> <td>{{row.Movimiento}}</td> <td width=\"30%\">{{row.Mensaje}}</td> </tr> </tbody> <tfoot> <tr> <td colspan=\"18\" class=\"text-left\"> <dir-pagination-controls max-size=\"5\" direction-links=\"true\" boundary-links=\"true\"> </dir-pagination-controls> </td> </tr> </tfoot> </table> <div class=\"col-md-8 col-md-offset-2\" style=\"margin-bottom: 20px\" align=\"center\"> <div class=\"col-sm-3\"> <button class=\"btn btn-csv btn-sm\" ng-click=\"$ctrl.crearVisibleAsCsv()\" style=\"white-space: normal\"> Exportar datos visibles como CSV  </button> </div> <div class=\"col-sm-3\"> <button class=\"btn btn-csv btn-sm\" ng-hide=\"$ctrl.todoAsCsv\" ng-click=\"$ctrl.crearTodoAsCsv()\" style=\"white-space: normal\"> Exportar todo <br> como CSV </button> </div> <div class=\"col-sm-3\"> <button class=\"btn btn-pdf btn-sm\" ng-click=\"$ctrl.createPdfTodo('visible')\" style=\"white-space: normal\">Exportar datos visibles como pdf</button> </div> <div class=\"col-sm-3\"> <button class=\"btn btn-pdf btn-sm\" ng-click=\"$ctrl.createPdfTodo('todo')\" style=\"white-space: normal\">Exportar todo <br> como pdf </button> </div> </div> <button class=\"btn btn-default\" id=\"csvUno\" ng-hide=\"$ctrl.csvUnoHide\" csv-column-order=\"$ctrl.order\" ng-csv=\"$ctrl.arrayReporte\" filename=\"{{ $ctrl.filename }}.csv\" field-separator=\",\" decimal-separator=\".\" add-bom=\"true\"> esconder botón visible data as csv</button> <!--csv-column-order=\"$ctrl.order\"  --> <button class=\"btn btn-default\" id=\"csvDos\" ng-hide=\"$ctrl.csvDosHide\" csv-column-order=\"$ctrl.order\" ng-csv=\"$ctrl.arrayReporte\" filename=\"{{ $ctrl.filename }}.csv\" field-separator=\",\" decimal-separator=\".\" add-bom=\"true\"> esconder botón visible data as csv</button> <!--csv-column-order=\"$ctrl.order\"  --> </div> </div> </div> </div>"
+    "  }</style> <div id=\"pdfreportimages\" style=\"display:none\"> <img crossorigin=\"\" src=\"images/StarGoPng.png\" id=\"pdflogoimage\"> </div> <div class=\"card\" style=\"margin-top:20px;padding-bottom: 30px\"> <div class=\"card-head style-default-light\" style=\"padding-top:10px; padding-left:10px\"> <header> <strong style=\"font-weight:bold; border:none; margin-left:10px\">Reportes</strong> <br><small class=\"text-muted\" style=\"font-size:14px; margin-left:10px\"><i class=\"fa fa-home\" aria-hidden=\"true\"></i> Reportes>Movimientos</small> </header> <div class=\"tools\"> </div> </div> <div class=\"section-body\"> <div class=\"col-md-12\"> <div class=\"panel-heading\"> <div class=\"tools\"> <div class=\"panel-group\" id=\"suscriptor\"> <div class=\"row\"> <div class=\"col-md-3\"> <div style=\"float:left\" class=\"col-md-4\"> <label for=\"fechaInicio\">Fecha Inicio: </label> </div> <div class=\"input-group\"> <input class=\"form-control\" ng-model=\"$ctrl.fechaInicio\" type=\"date\"> </div> </div> <div class=\"col-md-3\"> <div style=\"float:left\" class=\"col-md-4\"> <label for=\"fechaInicio\">Fecha Fin: </label> </div> <div class=\"input-group\"> <input class=\"form-control\" ng-model=\"$ctrl.fechaFin\" type=\"date\"> </div> </div> <div class=\"col-md-5\"> <a class=\"btn btn-primary btn-sm\" ng-click=\"$ctrl.getReporteMovimientos()\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Buscar\"> <i class=\"fa fa-search\"></i> Buscar</a> <a class=\"btn btn-info btn-sm\" ng-click=\"$ctrl.limpiarFiltros();\" data-toggle=\"tooltip\" data-placement=\"top\" title=\"\" data-original-title=\"Limpiar filtros\"> <i class=\"fa fa-eraser\"></i>Limpiar </a> </div> </div> <!--end .panel --> </div> </div> </div> <div class=\"panel form-element-padding\" style=\"margin-top:-20px\"> <table st-table=\"$ctrl.displayedCollection4\" st-safe-src=\"$ctrl.rowCollection4\" class=\"table table-striped\" st-filtered-collection=\"$ctrl.filteredCollection\"> <thead> <tr> <th st-sort=\"SAN\">SAN </th> <th st-sort=\"Suscriptor\">Suscriptor</th> <th st-sort=\"Beam\">Beam</th> <th st-sort=\"SatellitedID\">Satellite</th> <th st-sort=\"Usuario\">Usuario</th> <th st-sort=\"FechaMovim\">Fecha <br>Movimiento </th> <th st-sort=\"ESN\">ESN</th> <th st-sort=\"Movimiento\">Movimiento </th> <th st-sort=\"Mensaje\">Mensaje </th> </tr> <tr> <th> <input st-search=\"SAN\" placeholder=\"SAN\" class=\"input-sm form-control\" type=\"search\"> </th> <th> <input st-search=\"Suscriptor\" placeholder=\"Suscriptor\" class=\"input-sm form-control\" type=\"search\"> </th> <th> <input st-search=\"Beam\" placeholder=\"Beam\" class=\"input-sm form-control\" type=\"search\"> </th> <th> <input st-search=\"SatellitedID\" placeholder=\"Satellite\" class=\"input-sm form-control\" type=\"search\"> </th> <th> <input st-search=\"Usuario\" placeholder=\"Usuario\" class=\"input-sm form-control\" type=\"search\"> </th> <th> <input st-search=\"FechaMovim\" placeholder=\"Fecha Movimiento\" class=\"input-sm form-control\" type=\"search\"> </th> <th> <input st-search=\"ESN\" placeholder=\"ESN\" class=\"input-sm form-control\" type=\"search\"> </th> <th> <input st-search=\"Movimiento\" placeholder=\"Movimiento\" class=\"input-sm form-control\" type=\"search\"> </th> <th> <input st-search=\"Mensaje\" placeholder=\"Mensaje\" class=\"input-sm form-control\" type=\"search\"> </th> </tr> </thead> <tbody> <tr dir-paginate=\"row in $ctrl.displayedCollection4|orderBy:sortKey:reverse|itemsPerPage:5\"> <td width=\"6%\">{{row.SAN}}</td> <td>{{row.Suscriptor}}</td> <td>{{row.Beam}}</td> <td>{{row.SatellitedID}}</td> <td>{{row.Usuario}}</td> <td>{{row.FechaMovim}}</td> <td>{{row.ESN}}</td> <td>{{row.Movimiento}}</td> <td width=\"30%\">{{row.Mensaje}}</td> </tr> </tbody> <tfoot> <tr> <td colspan=\"18\" class=\"text-left\"> <dir-pagination-controls max-size=\"5\" direction-links=\"true\" boundary-links=\"true\"> </dir-pagination-controls> </td> </tr> </tfoot> </table> <div class=\"col-md-8 col-md-offset-2\" style=\"margin-bottom: 20px\" align=\"center\"> <div class=\"col-sm-3\"> <button class=\"btn btn-csv btn-sm\" ng-click=\"$ctrl.crearVisibleAsCsv()\" style=\"white-space: normal\"> Exportar datos visibles como CSV  </button> </div> <div class=\"col-sm-3\"> <button class=\"btn btn-csv btn-sm\" ng-hide=\"$ctrl.todoAsCsv\" ng-click=\"$ctrl.crearTodoAsCsv()\" style=\"white-space: normal\"> Exportar todo <br> como CSV </button> </div> <div class=\"col-sm-3\"> <button class=\"btn btn-pdf btn-sm\" ng-click=\"$ctrl.createPdfTodo('visible')\" style=\"white-space: normal\">Exportar datos visibles como pdf</button> </div> <div class=\"col-sm-3\"> <button class=\"btn btn-pdf btn-sm\" ng-click=\"$ctrl.createPdfTodo('todo')\" style=\"white-space: normal\">Exportar todo <br> como pdf </button> </div> </div> <button class=\"btn btn-default\" id=\"csvUno\" ng-hide=\"$ctrl.csvUnoHide\" csv-column-order=\"$ctrl.order\" ng-csv=\"$ctrl.arrayReporte\" filename=\"{{ $ctrl.filename }}.csv\" field-separator=\",\" decimal-separator=\".\" add-bom=\"true\"> esconder botón visible data as csv</button> <!--csv-column-order=\"$ctrl.order\"  --> <button class=\"btn btn-default\" id=\"csvDos\" ng-hide=\"$ctrl.csvDosHide\" csv-column-order=\"$ctrl.order\" ng-csv=\"$ctrl.arrayReporte\" filename=\"{{ $ctrl.filename }}.csv\" field-separator=\",\" decimal-separator=\".\" add-bom=\"true\"> esconder botón visible data as csv</button> <!--csv-column-order=\"$ctrl.order\"  --> </div> </div> </div> </div>"
   );
 
 

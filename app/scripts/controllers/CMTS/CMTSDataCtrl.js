@@ -1,7 +1,7 @@
 'use strict';
 angular.module('softvFrostApp').controller('CMTSDataCtrl', CMTSDataCtrl);
 
-function CMTSDataCtrl(AdministracionFactory, $state, CMTSFactory, $timeout) {
+function CMTSDataCtrl(CMTSFactory, $timeout, $localStorage, globalService, $interval, $http, $scope, $uibModal) {
 
   function Init() {
     /*AdministracionFactory.GetCMTSLista().then(function (data) {
@@ -14,7 +14,7 @@ function CMTSDataCtrl(AdministracionFactory, $state, CMTSFactory, $timeout) {
       skin: {
         type: 'tron'
       },
-      size: 300,
+      size: 250,
       unit: "%",
       barWidth: 40,
       trackColor: 'rgba(255,0,0,.1)',
@@ -29,7 +29,8 @@ function CMTSDataCtrl(AdministracionFactory, $state, CMTSFactory, $timeout) {
         width: 3
       },
       step: 5,
-      displayPrevious: true
+      displayPrevious: true,
+      readonly: true
     };
 
     vm.totalMemoria = 0;
@@ -37,7 +38,7 @@ function CMTSDataCtrl(AdministracionFactory, $state, CMTSFactory, $timeout) {
     vm.optionsMemoria = {
       startAngle: 30,
       endAngle: 330,
-      size: 300,
+      size: 250,
       unit: 'MB',
       trackColor: "rgba(162,121,143,1)",
       barColor: 'rgba(102,0,204,.5)',
@@ -48,7 +49,8 @@ function CMTSDataCtrl(AdministracionFactory, $state, CMTSFactory, $timeout) {
         text: 'Memoria Disponible'
       },
       max: 0,
-      min: 0
+      min: 0,
+      readonly: true
     };
 
     vm.totalHDD = 0;
@@ -56,7 +58,7 @@ function CMTSDataCtrl(AdministracionFactory, $state, CMTSFactory, $timeout) {
     vm.optionsHDD = {
       startAngle: 30,
       endAngle: 330,
-      size: 300,
+      size: 250,
       unit: 'MB',
       trackColor: "rgba(162,121,143,1)",
       barColor: 'rgba(102,0,204,.5)',
@@ -67,7 +69,8 @@ function CMTSDataCtrl(AdministracionFactory, $state, CMTSFactory, $timeout) {
         text: 'HDD Disponible'
       },
       max: 0,
-      min: 0
+      min: 0,
+      readonly: true
     };
 
     var parametros = {};
@@ -75,7 +78,7 @@ function CMTSDataCtrl(AdministracionFactory, $state, CMTSFactory, $timeout) {
     CMTSFactory.GetCMTSDatos(parametros).then(function (data) {
       //console.log(data);
       vm.CMTSData = data.GetCMTSDatosResult;
-      
+
       vm.totalMemoria = parseInt(vm.CMTSData.TotalMemory);
       vm.optionsMemoria.max = vm.totalMemoria;
       vm.valueMemoria = parseInt(vm.CMTSData.FreeMemory);
@@ -85,24 +88,114 @@ function CMTSDataCtrl(AdministracionFactory, $state, CMTSFactory, $timeout) {
       vm.valueHDD = parseInt(vm.CMTSData.FreehddSpace);
 
       vm.valueCargaCPU = parseInt(vm.CMTSData.CargaCPU);
-      
-     
-      /*vm.totalMemoria = 250;
-      vm.optionsMemoria.max = 250;
-      vm.valueMemoria = 50; 
 
-      vm.totalMemoria = 250;
-      vm.optionsMemoria.max = 250;
-      vm.valueMemoria = 50;
+      var bajada = [];
+      var subida = [];
 
-      vm.totalHDD = 500;
-      vm.optionsHDD.max = 500;
-      vm.valueHDD = 300;
+      vm.chart = Highcharts.chart('container', {
+        chart: {
+          type: 'spline',
+          animation: Highcharts.svg, // don't animate in old IE
+          marginRight: 10,
+          events: {
+            load: function () {
 
-      vm.valueCargaCPU = 50;*/
+              // set up the updating of the chart each second
+              vm.cmtsInterval = setInterval(function () {
+                var parametros2 = {};
+                parametros2.Interface = 'sfp1';
+                var config = {
+                  headers: {
+                    'Authorization': $localStorage.currentUser.token
+                  },
+                  Bloquea: false
+                };
+                $http.post(globalService.getUrl() + '/Cmts/GetCMTSConsumoInterface', parametros2, config).then(function (response) {
+                  var consumo = response.data.GetCMTSConsumoInterfaceResult;
+                  console.log(consumo);
+                  var x = (new Date()).getTime(); // current time
+                  vm.chart.series[0].addPoint([x, parseFloat(consumo.tx)], false, true);
+                  vm.chart.series[1].addPoint([x, parseFloat(consumo.Rx)], false, true);
+                  vm.chart.redraw();
+                });
+              }, 2000);
+            }
+          }
+        },
+
+        time: {
+          useUTC: false
+        },
+
+        title: {
+          text: 'Consumo Actual Interface sfp1'
+        },
+        xAxis: {
+          type: 'datetime',
+          tickPixelInterval: 150
+        },
+        yAxis: {
+          title: {
+            text: 'MB'
+          },
+          plotLines: [{
+            value: 0,
+            width: 1,
+            color: '#808080'
+          }]
+        },
+        tooltip: {
+          headerFormat: '<b>{series.name}</b><br/>',
+          pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}'
+        },
+        legend: {
+          enabled: false
+        },
+        exporting: {
+          enabled: false
+        },
+        series: [{
+          name: 'Bajada',
+          data: (function () {
+            // generate an array of random data
+            var data = [],
+              time = (new Date()).getTime(),
+              i;
+
+            for (i = -25; i <= 0; i += 1) {
+              data.push({
+                x: time + i * 2000,
+                y: 0
+              });
+            }
+            return data;
+          }())
+        },
+        {
+          name: 'Subida',
+          data: (function () {
+            // generate an array of random data
+            var data = [],
+              time = (new Date()).getTime(),
+              i;
+
+            for (i = -25; i <= 0; i += 1) {
+              data.push({
+                x: time + i * 2000,
+                y: 0
+              });
+            }
+            return data;
+          }())
+        }]
+      });
     });
 
   }
+
+  $scope.$on("$destroy", function () {
+    clearInterval(vm.cmtsInterval);
+  });
 
   function CambiaCMTS(CMTS) {
     //Descoloreamos el anterior
@@ -148,8 +241,30 @@ function CMTSDataCtrl(AdministracionFactory, $state, CMTSFactory, $timeout) {
     });
   }
 
+  function HistorialConsumo() {
+    var interfaz = 'sfp1';
+    var modalInstance = $uibModal.open({
+      animation: true,
+      ariaLabelledBy: 'modal-title',
+      ariaDescribedBy: 'modal-body',
+      templateUrl: 'views/CMTS/CMTSConsumoHistorial.html',
+      controller: 'CMTSConsumoHistorialCtrl',
+      controllerAs: 'ctrl',
+      backdrop: 'static',
+      keyboard: false,
+      size: 'lg',
+      resolve: {
+        interfaz: function () {
+          return interfaz;
+        }
+      }
+    });
+
+  }
+
   var vm = this;
   vm.cmtses = {};
   vm.CambiaCMTS = CambiaCMTS;
+  vm.HistorialConsumo = HistorialConsumo;
   Init();
 }

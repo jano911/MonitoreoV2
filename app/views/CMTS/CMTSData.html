@@ -1,5 +1,4 @@
-
-<div class="card" style="margin-top:10px;">
+<!--<div class="card" style="margin-top:10px;">
 
   <div class="card-head style-default-light" style="padding-top:10px; padding-left:10px;">
     <header>
@@ -9,16 +8,73 @@
   <div class="card-body">
     <div class="panel">
       <div class="row">
-        <div class="col-md-4 text-center" >
+        <div class="col-md-4 text-center">
           <ui-knob value="$ctrl.valueCargaCPU" options="$ctrl.optionsCargaCPU"></ui-knob>
         </div>
-        <div class="col-md-4 text-center" >
+        <div class="col-md-4 text-center">
           <ui-knob value="$ctrl.valueMemoria" options="$ctrl.optionsMemoria"></ui-knob>
         </div>
-        <div class="col-md-4 text-center" >
+        <div class="col-md-4 text-center">
           <ui-knob value="$ctrl.valueHDD" options="$ctrl.optionsHDD"></ui-knob>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</div>-->
+
+<section style="margin-top:10px;">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card card-outlined style-gray-light">
+        <div class="card-head card-head-sm style-info ">
+          <header>Consumo en Tiempo Real</header>
+          <div class="tools">
+            <button style="margin-top:7px;" class="btn-sm btn-block ink-reaction btn-default-dark" ng-click="$ctrl.HistorialConsumo()"><i class="fa fa-area-chart"></i> Historial</button>
+          </div>
+        </div>
+        <div class="card-body style-default-bright">
+          <div class="row">
+            <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-4">
+      <div class="card card-outlined style-warning">
+        <div class="card-head card-head-xs style-warning ">
+          <header>Carga de CPU</header>
+        </div>
+        <div class="card-body style-default-bright text-center">
+          <ui-knob value="$ctrl.valueCargaCPU" options="$ctrl.optionsCargaCPU"></ui-knob>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card card-outlined style-danger">
+        <div class="card-head card-head-xs  style-danger">
+          <header>Memoria Disponible</header>
+        </div>
+        <div class="card-body style-default-bright text-center">
+            <ui-knob value="$ctrl.valueMemoria" options="$ctrl.optionsMemoria"></ui-knob>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card card-outlined style-success">
+        <div class="card-head card-head-xs style-success ">
+          <header>HDD Disponible</header>
+        </div>
+        <div class="card-body style-default-bright text-center">
+            <ui-knob value="$ctrl.valueHDD" options="$ctrl.optionsHDD"></ui-knob>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

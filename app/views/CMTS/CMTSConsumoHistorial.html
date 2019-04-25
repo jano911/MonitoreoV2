@@ -1,0 +1,41 @@
+<div class="modal-header">
+    <button class="close" aria-label="Close" type="button" ng-click="ctrl.cancel()">×</button>
+    <h4 class="modal-title">Historial de Consumo</h4>
+  </div>
+  <div class="modal-body" style="padding-top:20px;">
+    <div class="row">
+      <div class="col-md-5">
+        <div class="col-md-4">
+          <label for="fechaInicio">Fecha Inicio: </label>
+        </div>
+        <div class="input-group">
+          <input class="form-control" ng-model="ctrl.fechaInicio" type="date" />
+        </div>
+      </div>
+  
+      <div class="col-md-5">
+        <div class="col-md-4">
+          <label for="fechaInicio">Fecha Fin: </label>
+        </div>
+        <div class="input-group">
+          <input class="form-control" ng-model="ctrl.fechaFin" type="date" />
+        </div>
+      </div>
+  
+      <div class="col-md-2">
+        <div class="input-group">
+          <a class="btn btn-primary btn-sm" ng-click="ctrl.FiltraResultados()" data-toggle="tooltip" data-placement="top"
+            title="Filtrar Resultados" data-original-title="Filtrar Resultados">
+            <i class="fa fa-search"></i> Buscar</a>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <!--<chart-canvas mac="{{ctrl.Cablemodem.MAC}}" style="margin-left:15px;"></chart-canvas>-->
+      <div id="container2" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+    </div>
+  </div>
+  
+  <div class="modal-footer">
+    <button class="btn btn-default" type="button" ng-click="ctrl.cancel()">Cerrar</button>
+  </div>

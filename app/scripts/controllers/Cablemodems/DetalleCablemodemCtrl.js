@@ -14,24 +14,27 @@ angular
 
         var obj = {};
         obj.MAC = vm.Cablemodem.MAC;
+        obj.FechaInicio = '19000101';
+        obj.FechaFin = '19000101';
         CablemodemFactory.GetHistorialConsumo(obj).then(function (data) {
           var historico = data.GetHistorialConsumoResult;
           var bajada = [];
           var subida = [];
           historico.forEach(function (item, index) {
+            var x = new Date(parseInt(item.Fecha) * 1000);
             var bAux = [
-              parseFloat(item.Fecha),
-              parseFloat(item.Rx)
+              x.getTime(),
+              parseFloat(item.tx)
             ];
             var sAux = [
-              parseFloat(item.Fecha),
-              parseFloat(item.tx)
+              x.getTime(),
+              parseFloat(item.Rx)
             ];
             bajada.push(bAux);
             subida.push(sAux);
           });
-
-          var chart = Highcharts.chart('container', {
+          //Time series chart
+          vm.chart = Highcharts.chart('container', {
             chart: {
               zoomType: 'x'
             },
@@ -68,7 +71,7 @@ angular
                   ]
                 },
                 marker: {
-                  radius: 2
+                  radius: 1
                 },
                 lineWidth: 1,
                 states: {
@@ -87,7 +90,7 @@ angular
             }]
           });
 
-          chart.addSeries({
+          vm.chart.addSeries({
             name: 'Subida',
             data: subida
           });
@@ -104,9 +107,97 @@ angular
 
     }
 
+    function FiltraResultados() {
+      var obj = {};
+      obj.MAC = vm.Cablemodem.MAC;
+      obj.FechaInicio = vm.fechaInicio;
+      obj.FechaFin = vm.fechaFin;
+      CablemodemFactory.GetHistorialConsumo(obj).then(function (data) {
+        var historico = data.GetHistorialConsumoResult;
+        var bajada = [];
+        var subida = [];
+        historico.forEach(function (item, index) {
+          var x = new Date(parseInt(item.Fecha) * 1000);
+          var bAux = [
+            x.getTime(),
+            parseFloat(item.tx)
+          ];
+          var sAux = [
+            x.getTime(),
+            parseFloat(item.Rx)
+          ];
+          bajada.push(bAux);
+          subida.push(sAux);
+        });
+        //Time series chart
+        vm.chart = Highcharts.chart('container', {
+          chart: {
+            zoomType: 'x'
+          },
+          title: {
+            text: 'Historial de Consumo'
+          },
+          subtitle: {
+            text: document.ontouchstart === undefined ?
+              'Haz click y arrastra en el área de la gráfica para hacer zoom' : ''
+          },
+          xAxis: {
+            type: 'datetime'
+          },
+          yAxis: {
+            title: {
+              text: 'MB'
+            }
+          },
+          legend: {
+            enabled: false
+          },
+          plotOptions: {
+            area: {
+              fillColor: {
+                linearGradient: {
+                  x1: 0,
+                  y1: 0,
+                  x2: 0,
+                  y2: 1
+                },
+                stops: [
+                  [0, Highcharts.getOptions().colors[0]],
+                  [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                ]
+              },
+              marker: {
+                radius: 1
+              },
+              lineWidth: 1,
+              states: {
+                hover: {
+                  lineWidth: 1
+                }
+              },
+              threshold: null
+            }
+          },
+
+          series: [{
+            type: 'line',
+            name: 'Bajada',
+            data: bajada
+          }]
+        });
+
+        vm.chart.addSeries({
+          name: 'Subida',
+          data: subida
+        });
+      });
+    }
+
     var vm = this;
     vm.cancel = cancel;
     vm.ok = ok;
     initialData();
-
+    vm.fechaInicio = new Date();
+    vm.fechaFin = new Date();
+    vm.FiltraResultados = FiltraResultados;
   });

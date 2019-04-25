@@ -11,7 +11,6 @@ angular
             console.log('parametros',parametros);
             CablemodemFactory.GetDatosCliente(parametros).then(function (data) {
                 vm.Cliente = data.GetDatosClienteResult;
-                //8014A8963E8D
                 parametros.MAC = '';
                 for (var i=0; i < vm.Cablemodem.MAC.length; i++) {
                     console.log(vm.Cablemodem.MAC.charAt(i)); 
@@ -43,7 +42,8 @@ angular
                                         var config = {
                                             headers: {
                                                 'Authorization': $localStorage.currentUser.token
-                                            }
+                                            },
+                                            Bloquea: false
                                         };
                                         $http.post(globalService.getUrl() + '/Cablemodem/GetConsumoActual', parametros2, config).then(function (response) {
                                             var consumo = response.data.GetConsumoActualResult;
@@ -162,7 +162,7 @@ angular
         initialData();
 
     });
-angular.module('softvFrostApp').directive("chartRealtime", ['$document', function () {
+/*angular.module('softvFrostApp').directive("chartRealtime", ['$document', function () {
     return {
         restrict: "E",
         scope: {
@@ -253,4 +253,4 @@ angular.module('softvFrostApp').directive("chartRealtime", ['$document', functio
             };
         }
     }
-}])
+}])*/
