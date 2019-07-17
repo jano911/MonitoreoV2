@@ -13,10 +13,10 @@ function NuevoUsuarioCtrl(usuarioFactory, rolFactory, $state, ngNotify) {
 	vm.isDuplicate = false;
 
 	this.$onInit = function () {
-		rolFactory.GetRoleList().then(function (data) {
+		/*rolFactory.GetRoleList().then(function (data) {
 			vm.Roles = data.GetRoleListResult;
 
-		});
+		});*/
 	};
 
 	function GuardarUsuario() {
@@ -25,7 +25,7 @@ function NuevoUsuarioCtrl(usuarioFactory, rolFactory, $state, ngNotify) {
 		} else {
 			if (vm.Contrasena === vm.Contrasena2) {
 				var obj = {};
-				obj.IdRol = vm.Rol.IdRol;
+				obj.IdRol = 1;
 				obj.Nombre = vm.Nombre;
 				obj.Email = vm.Correo;
 				obj.Usuario = vm.Descripcion;

@@ -8,142 +8,141 @@ angular
 
             var parametros = {};
             parametros.MAC = vm.Cablemodem.MAC;
-            console.log('parametros',parametros);
+            console.log('parametros', parametros);
             CablemodemFactory.GetDatosCliente(parametros).then(function (data) {
                 vm.Cliente = data.GetDatosClienteResult;
                 parametros.MAC = '';
-                for (var i=0; i < vm.Cablemodem.MAC.length; i++) {
-                    console.log(vm.Cablemodem.MAC.charAt(i)); 
+                for (var i = 0; i < vm.Cablemodem.MAC.length; i++) {
+                    console.log(vm.Cablemodem.MAC.charAt(i));
                     parametros.MAC = parametros.MAC + vm.Cablemodem.MAC.charAt(i);
-                    if(((i+1) % 2) == 0 && i != (vm.Cablemodem.MAC.length-1))
+                    if (((i + 1) % 2) == 0 && i != (vm.Cablemodem.MAC.length - 1))
                         parametros.MAC = parametros.MAC + ':';
                 }
+                vm.MACFormato = parametros.MAC;
                 console.log(parametros);
-                CablemodemFactory.GetIPCliente(parametros).then(function (data) {
-                    console.log('GetIPCliente',data);
-                    vm.IP = data.GetIPClienteResult.IP;
 
-                    var bajada = [];
-                    var subida = [];
 
-                    vm.chart = Highcharts.chart('container', {
-                        chart: {
-                            type: 'spline',
-                            animation: Highcharts.svg, // don't animate in old IE
-                            marginRight: 10,
-                            events: {
-                                load: function () {
+                var bajada = [];
+                var subida = [];
 
-                                    // set up the updating of the chart each second
-                                    var series = this.series[0];
-                                    vm.interval = setInterval(function () {
-                                        var parametros2 = {};
-                                        parametros2.MAC = vm.IP;
-                                        var config = {
-                                            headers: {
-                                                'Authorization': $localStorage.currentUser.token
-                                            },
-                                            Bloquea: false
-                                        };
-                                        $http.post(globalService.getUrl() + '/Cablemodem/GetConsumoActual', parametros2, config).then(function (response) {
-                                            var consumo = response.data.GetConsumoActualResult;
-                                            console.log(consumo);
-                                            var x = (new Date()).getTime(); // current time
-                                            vm.chart.series[0].addPoint([x, parseFloat(consumo.tx)], false, true);
-                                            vm.chart.series[1].addPoint([x, parseFloat(consumo.Rx)], false, true);
-                                            vm.chart.redraw();
-                                        });
-                                    }, 2000);
-                                }
+                vm.chart = Highcharts.chart('container', {
+                    chart: {
+                        type: 'spline',
+                        animation: Highcharts.svg, // don't animate in old IE
+                        marginRight: 10,
+                        events: {
+                            load: function () {
+
+                                // set up the updating of the chart each second
+                                var series = this.series[0];
+                                vm.interval = setInterval(function () {
+                                    var parametros2 = {};
+                                    parametros2.MAC = vm.MACFormato;
+                                    var config = {
+                                        headers: {
+                                            'Authorization': $localStorage.currentUser.token
+                                        },
+                                        Bloquea: false
+                                    };
+                                    $http.post(globalService.getUrl() + '/Cablemodem/GetConsumoActual', parametros2, config).then(function (response) {
+                                        var consumo = response.data.GetConsumoActualResult;
+                                        console.log(consumo);
+                                        var x = (new Date()).getTime(); // current time
+                                        vm.chart.series[0].addPoint([x, parseFloat(consumo.tx)], false, true);
+                                        vm.chart.series[1].addPoint([x, parseFloat(consumo.Rx)], false, true);
+                                        vm.chart.redraw();
+                                    });
+                                }, 2000);
                             }
-                        },
+                        }
+                    },
 
-                        time: {
-                            useUTC: false
-                        },
+                    time: {
+                        useUTC: false
+                    },
 
+                    title: {
+                        text: 'Consumo Actual'
+                    },
+                    xAxis: {
+                        type: 'datetime',
+                        tickPixelInterval: 150
+                    },
+                    yAxis: {
                         title: {
-                            text: 'Consumo Actual'
+                            text: 'MB'
                         },
-                        xAxis: {
-                            type: 'datetime',
-                            tickPixelInterval: 150
-                        },
-                        yAxis: {
-                            title: {
-                                text: 'MB'
-                            },
-                            plotLines: [{
-                                value: 0,
-                                width: 1,
-                                color: '#808080'
-                            }]
-                        },
-                        tooltip: {
-                            headerFormat: '<b>{series.name}</b><br/>',
-                            pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}'
-                        },
-                        legend: {
-                            enabled: false
-                        },
-                        exporting: {
-                            enabled: false
-                        },
-                        series: [{
-                            name: 'Bajada',
-                            data: (function () {
-                                // generate an array of random data
-                                var data = [],
-                                    time = (new Date()).getTime(),
-                                    i;
-                    
-                                for (i = -25; i <= 0; i += 1) {
-                                    data.push({
-                                        x: time + i * 2000,
-                                        y: 0
-                                    });
-                                }
-                                return data;
-                            }())
-                        },
-                        {
-                            name: 'Subida',
-                            data: (function () {
-                                // generate an array of random data
-                                var data = [],
-                                    time = (new Date()).getTime(),
-                                    i;
-                    
-                                for (i = -25; i <= 0; i += 1) {
-                                    data.push({
-                                        x: time + i * 2000,
-                                        y: 0
-                                    });
-                                }
-                                return data;
-                            }())
+                        plotLines: [{
+                            value: 0,
+                            width: 1,
+                            color: '#808080'
                         }]
-                    });
-                    /*
-                    vm.interval = setInterval(function () {
-                        var parametros = {};
-                        parametros.MAC = vm.IP;
-                        var config = {
-                            headers: {
-                                'Authorization': $localStorage.currentUser.token
+                    },
+                    tooltip: {
+                        headerFormat: '<b>{series.name}</b><br/>',
+                        pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}'
+                    },
+                    legend: {
+                        enabled: false
+                    },
+                    exporting: {
+                        enabled: false
+                    },
+                    series: [{
+                        name: 'Bajada',
+                        data: (function () {
+                            // generate an array of random data
+                            var data = [],
+                                time = (new Date()).getTime(),
+                                i;
+
+                            for (i = -25; i <= 0; i += 1) {
+                                data.push({
+                                    x: time + i * 2000,
+                                    y: 0
+                                });
                             }
-                        };
-                        var data = {};
-                        $http.post(globalService.getUrl() + '/Cablemodem/GetConsumoActual', parametros, config).then(function (response) {
-                            var consumo = response.data.GetConsumoActualResult;
+                            return data;
+                        }())
+                    },
+                    {
+                        name: 'Subida',
+                        data: (function () {
+                            // generate an array of random data
+                            var data = [],
+                                time = (new Date()).getTime(),
+                                i;
 
-                            chart.series[0].addPoint([(new Date()).getTime(), parseFloat(consumo.tx)], false, true);
-                            chart.series[1].addPoint([(new Date()).getTime(), parseFloat(consumo.Rx)], false, true);
-                            chart.redraw();
-                        });
-
-                    }, 1000);*/
+                            for (i = -25; i <= 0; i += 1) {
+                                data.push({
+                                    x: time + i * 2000,
+                                    y: 0
+                                });
+                            }
+                            return data;
+                        }())
+                    }]
                 });
+                /*
+                vm.interval = setInterval(function () {
+                    var parametros = {};
+                    parametros.MAC = vm.IP;
+                    var config = {
+                        headers: {
+                            'Authorization': $localStorage.currentUser.token
+                        }
+                    };
+                    var data = {};
+                    $http.post(globalService.getUrl() + '/Cablemodem/GetConsumoActual', parametros, config).then(function (response) {
+                        var consumo = response.data.GetConsumoActualResult;
+
+                        chart.series[0].addPoint([(new Date()).getTime(), parseFloat(consumo.tx)], false, true);
+                        chart.series[1].addPoint([(new Date()).getTime(), parseFloat(consumo.Rx)], false, true);
+                        chart.redraw();
+                    });
+
+                }, 1000);*/
+
             });
         }
 

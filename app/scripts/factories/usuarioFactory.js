@@ -20,7 +20,8 @@ angular.module('softvFrostApp')
 			var config = {
 				headers: {
 					'Authorization': $localStorage.currentUser.token
-				}
+				},
+				Bloquea: false
 			};
 			$http.post(globalService.getUrl() + paths.existeUsuario, JSON.stringify(Parametros), config).then(function (response) {
 				deferred.resolve(response.data);
@@ -35,7 +36,8 @@ angular.module('softvFrostApp')
 			var config = {
 				headers: {
 					'Authorization': $localStorage.currentUser.token
-				}
+				},
+				Bloquea: false
 			};
 			$http.get(globalService.getUrl() + paths.getUsuarioList, config).then(function (response) {
 				deferred.resolve(response.data);
@@ -53,7 +55,8 @@ angular.module('softvFrostApp')
 			var config = {
 				headers: {
 					'Authorization': $localStorage.currentUser.token
-				}
+				},
+				Bloquea: false
 			};
 			$http.post(globalService.getUrl() + paths.GetUserDetail, JSON.stringify(Parametros), config).then(function (response) {
 				deferred.resolve(response.data);
@@ -79,7 +82,8 @@ angular.module('softvFrostApp')
 			var config = {
 				headers: {
 					'Authorization': $localStorage.currentUser.token
-				}
+				},
+				Bloquea: false
 			};
 			$http.post(globalService.getUrl() + paths.AddUsuario, JSON.stringify(Parametros), config).then(function (response) {
 				deferred.resolve(response.data);
@@ -105,7 +109,8 @@ angular.module('softvFrostApp')
 			var config = {
 				headers: {
 					'Authorization': $localStorage.currentUser.token
-				}
+				},
+				Bloquea: false
 			};
 			$http.post(globalService.getUrl() + paths.UpdateUsuario, JSON.stringify(Parametros), config).then(function (response) {
 				deferred.resolve(response.data);
@@ -129,7 +134,8 @@ angular.module('softvFrostApp')
 			var config = {
 				headers: {
 					'Authorization': $localStorage.currentUser.token
-				}
+				},
+				Bloquea: false
 			};
 			$http.post(globalService.getUrl() + paths.BuscaUsuario, JSON.stringify(Parametros), config).then(function (response) {
 				deferred.resolve(response.data);

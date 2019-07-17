@@ -103,7 +103,7 @@ function CMTSDataCtrl(CMTSFactory, $timeout, $localStorage, globalService, $inte
               // set up the updating of the chart each second
               vm.cmtsInterval = setInterval(function () {
                 var parametros2 = {};
-                parametros2.Interface = 'sfp1';
+                parametros2.Interface = 'ether1';
                 var config = {
                   headers: {
                     'Authorization': $localStorage.currentUser.token
@@ -128,7 +128,7 @@ function CMTSDataCtrl(CMTSFactory, $timeout, $localStorage, globalService, $inte
         },
 
         title: {
-          text: 'Consumo Actual Interface sfp1'
+          text: 'Consumo Actual Interface ether1'
         },
         xAxis: {
           type: 'datetime',
@@ -242,7 +242,7 @@ function CMTSDataCtrl(CMTSFactory, $timeout, $localStorage, globalService, $inte
   }
 
   function HistorialConsumo() {
-    var interfaz = 'sfp1';
+    var interfaz = 'ether1';
     var modalInstance = $uibModal.open({
       animation: true,
       ariaLabelledBy: 'modal-title',

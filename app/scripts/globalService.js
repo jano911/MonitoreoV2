@@ -5,8 +5,9 @@ angular.module('softvFrostApp')
     var svc = {};
     //rutas servidor producción
     svc.getUrl = function () {
-      return 'http://192.168.50.10:8081/SoftvWCFService.svc';
-      //return 'http://localhost:64481/SoftvWCFService.svc';
+      //return 'http://192.168.50.10:8081/SoftvWCFService.svc';
+      //return 'http://192.168.101.110:8081/SoftvWCFService.svc'; 
+      return 'http://localhost:64481/SoftvWCFService.svc';
     };
 
     return svc;
